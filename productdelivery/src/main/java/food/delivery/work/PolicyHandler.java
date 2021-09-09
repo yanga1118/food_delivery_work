@@ -17,13 +17,16 @@ public class PolicyHandler{
 
         if(!orderPlaced.validate()) return;
 
-        System.out.println("\n\n##### listener AcceptOrder : " + orderPlaced.toJson() + "\n\n");
+        // delivery 객체 생성 //
+         StockDelivery delivery = new StockDelivery();
 
+         delivery.setOrderId(orderPlaced.getId());
+         delivery.setCustomerId(orderPlaced.getUserId());
+         delivery.setOrderDate(orderPlaced.getOrderDate());
+         delivery.setPhoneNo(orderPlaced.getPhoneno());
+         delivery.setDeliveryStatus("delivery Started");
 
-
-        // Sample Logic //
-        // StockDelivery stockDelivery = new StockDelivery();
-        // stockDeliveryRepository.save(stockDelivery);
+         stockDeliveryRepository.save(delivery);
 
     }
     @StreamListener(KafkaProcessor.INPUT)
@@ -31,33 +34,10 @@ public class PolicyHandler{
 
         if(!orderCanceled.validate()) return;
 
-        System.out.println("\n\n##### listener CancleOrder : " + orderCanceled.toJson() + "\n\n");
-
-
-
-        // Sample Logic //
-        // StockDelivery stockDelivery = new StockDelivery();
-        // stockDeliveryRepository.save(stockDelivery);
-
-    }
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverCouponPublished_CancleOrder(@Payload CouponPublished couponPublished){
-
-        if(!couponPublished.validate()) return;
-
-        System.out.println("\n\n##### listener CancleOrder : " + couponPublished.toJson() + "\n\n");
-
-
-
-        // Sample Logic //
-        // StockDelivery stockDelivery = new StockDelivery();
-        // stockDeliveryRepository.save(stockDelivery);
+        Long orderId =Long.valueOf(orderCanceled.getId());
+        stockDeliveryRepository.deleteById(orderId); 
 
     }
 
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString){}
-
-
+  
 }

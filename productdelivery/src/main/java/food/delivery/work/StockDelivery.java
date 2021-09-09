@@ -9,8 +9,9 @@ import java.util.Date;
 @Table(name="StockDelivery_table")
 public class StockDelivery {
 
-    private Long id;
-    private String orderId;
+     //Distance 삭제 및 Id auto로 변경
+    
+    private Long orderId;
     private String orderStatus;
     private String userName;
     private String address;
@@ -24,28 +25,41 @@ public class StockDelivery {
     private Long productPrice;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer distance;
+    private Long id;
     private String customerId;
     private String deliveryStatus;
     private Date deliveryDate;
-    private String userId;
-    private String payStatus;
-
+    private Long userId;
+  
     @PostPersist
     public void onPostPersist(){
         DeliveryStarted deliveryStarted = new DeliveryStarted();
         BeanUtils.copyProperties(this, deliveryStarted);
         deliveryStarted.publishAfterCommit();
+    }
 
+    @PreRemove
+    public void onPreRemove(){
         DeliveryCancled deliveryCancled = new DeliveryCancled();
         BeanUtils.copyProperties(this, deliveryCancled);
         deliveryCancled.publishAfterCommit();
-
-        DeliveryCompleted deliveryCompleted = new DeliveryCompleted();
-        BeanUtils.copyProperties(this, deliveryCompleted);
-        deliveryCompleted.publishAfterCommit();
-
     }
+
+    @PostUpdate
+    public void onPostUpdate(){
+       // DeliveryCompleted deliveryCompleted = new DeliveryCompleted();
+       // BeanUtils.copyProperties(this, deliveryCompleted);
+       // deliveryCompleted.publishAfterCommit();
+       boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon
+       (String.valueOf(this.getId()),this.getCustomerId(),this.getDeliveryStatus(),this.getPhoneNo());
+
+       if(result){
+           System.out.println("Coupon Published");
+       }
+    }
+   
+  
+   
 
     public Long getId() {
         return id;
@@ -54,12 +68,12 @@ public class StockDelivery {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrderId(Long orderid) {
+        this.orderId = orderid;
     }
     public String getOrderStatus() {
         return orderStatus;
@@ -138,13 +152,7 @@ public class StockDelivery {
     public void setProductPrice(Long productPrice) {
         this.productPrice = productPrice;
     }
-    public Integer getDistance() {
-        return distance;
-    }
 
-    public void setDistance(Integer distance) {
-        this.distance = distance;
-    }
     public String getCustomerId() {
         return customerId;
     }
@@ -166,20 +174,14 @@ public class StockDelivery {
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public String getPayStatus() {
-        return payStatus;
-    }
-
-    public void setPayStatus(String payStatus) {
-        this.payStatus = payStatus;
-    }
+ 
 
 
 
