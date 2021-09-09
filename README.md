@@ -3,6 +3,7 @@
 따라서 IAM 계정이 생성되었다고 가정하고 그 이후의 상황을 정리합니다. 
 
 1. 로컬 윈도우에 우분투설치 (Microsoft 스토어에 윈도우용 우분투 설치) 
+
 <참고 - 우분투 패키지 관리 툴> http://taewan.kim/tip/apt-apt-get/ 
 
 2. 우분투에 mvn 설치 (환경변수 세팅은 msaschool 참고)
@@ -59,7 +60,24 @@ eksctl version
 
 eksctl create cluster --name (vbaorov-eks) --version (1.18) --nodegroup-name standard-workers --node-type t3.medium --nodes 2 --nodes-min 1 --nodes-max 2
 
-8. ECR 구성
+8. Kubectl Context 설정
+
+aws eks update-kubeconfig --name (클러스터명)
+
+10. ECR 리포지토리 생성
 <참고> https://blog.naver.com/sssang97/222459232906 
 
--- 작성중
+11. 도커 클라이언트 AWS 인증
+
+생성된 ECR 리포지토리로 들어가 우상단 푸시 명령 보기를 통해 복붙
+aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 651396752652.dkr.ecr.ap-northeast-2.amazonaws.com
+
+Login Succeeded 뜨면 성공
+
+1) 도커 이미지를 처음 생성할 때
+<참고> https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/docker-basics.html
+
+인스턴스 생성 필요 - 인스턴스 연결 - .... 계속 진행
+
+docker build -t vbaorov-test .
+
