@@ -26,10 +26,10 @@ spring:
       bindings:
         event-in:
           group: marketing
-          destination: food.delivery.work
+          destination: yogiyo
           contentType: application/json
         event-out:
-          destination: food.delivery.work
+          destination: yogiyo
           contentType: application/json
 
 logging:
@@ -58,8 +58,8 @@ spring:
       bindings:
         event-in:
           group: marketing
-          destination: food.delivery.work
+          destination: yogiyo
           contentType: application/json
         event-out:
-          destination: food.delivery.work
+          destination: yogiyo
           contentType: application/json

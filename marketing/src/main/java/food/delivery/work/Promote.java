@@ -12,14 +12,19 @@ public class Promote {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private Integer phoneno;
+    //phoneno String 변경
+    private String phoneno;
     private String username;
     private String orderid;
     private String orderstatus;
     private String productid;
-    private String payStatus;
+    //payStatus 변경
+    private String deliverytatus;
     private String couponkind;
     private String couponuseyn;
+    //userId 추가
+    private Long userId;
+
 
     @PostPersist
     public void onPostPersist(){
@@ -36,11 +41,11 @@ public class Promote {
     public void setId(Long id) {
         this.id = id;
     }
-    public Integer getPhoneno() {
+    public String getPhoneno() {
         return phoneno;
     }
 
-    public void setPhoneno(Integer phoneno) {
+    public void setPhoneno(String phoneno) {
         this.phoneno = phoneno;
     }
     public String getUsername() {
@@ -71,12 +76,12 @@ public class Promote {
     public void setProductid(String productid) {
         this.productid = productid;
     }
-    public String getPayStatus() {
-        return payStatus;
+    public String getdeliverytatus() {
+        return deliverytatus;
     }
 
-    public void setPayStatus(String payStatus) {
-        this.payStatus = payStatus;
+    public void setdeliverytatus(String deliverytatus) {
+        this.deliverytatus = deliverytatus;
     }
     public String getCouponkind() {
         return couponkind;
@@ -93,7 +98,23 @@ public class Promote {
         this.couponuseyn = couponuseyn;
     }
 
+    public String getDeliverytatus() {
+        return deliverytatus;
+    }
 
+    public void setDeliverytatus(String deliverytatus) {
+        this.deliverytatus = deliverytatus;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    
 
 
 }
