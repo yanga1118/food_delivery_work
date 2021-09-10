@@ -43,6 +43,8 @@ AWS Secret Access Key [None]: it4KE4S06uooRoB72YkKlNyuDHtV4oTspUmItiKG
 Default region name [None]: ap-northeast-2 
 Default output format [None]: json
 
+3. EKS 
+
 
 3. eksctl 명령어로 클러스터 생성 (시간 좀 걸림)
 eksctl create cluster --name (vbaorov-eks) --version (1.18) --nodegroup-name standard-workers --node-type t3.medium --nodes 2 --nodes-min 1 --nodes-max 2
@@ -74,12 +76,38 @@ Login Succeeded
 오류(unknown flag: --password-stdin) 발생 시,
 docker login --username AWS -p $(aws ecr get-login-password --region (Region-Code)) (Account-Id).dkr.ecr.(Region-Code).amazonaws.com/
 
-7. 도커 페이지 (hub.docker.com) 
+7. EKS 모니터링을 위한 Metric-Server 설치
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+
+<정상일때> 
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+serviceaccount/metrics-server created
+deployment.apps/metrics-server created
+service/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+
+<확인> kubectl get node
+
+NAME                                                STATUS   ROLES    AGE   VERSION
+ip-192-168-58-44.ap-northeast-2.compute.internal    Ready    <none>   31h   v1.18.20-eks-c9f1ce
+ip-192-168-73-119.ap-northeast-2.compute.internal   Ready    <none>   31h   v1.18.20-eks-c9f1ce
+
+<확인> kubectl top node
+
+NAME                                                CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+ip-192-168-58-44.ap-northeast-2.compute.internal    43m          2%     492Mi           14%
+ip-192-168-73-119.ap-northeast-2.compute.internal   54m          2%     517Mi           15%
 
 
-7. AWS 레지스트리에 도커 이미지 푸쉬
+7. Metric-Server 설치 (파이널 평가때 반드시 해야함) 
 
-aws ecr create-repository --repository-name (IMAGE_NAME) --region ap-northeast-2
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+
 
 5. EKS 설치
 
