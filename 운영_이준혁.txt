@@ -1,1 +1,5 @@
-test입니다.
+#AWS 환경셋팅
+
+1. AWS IAM계정 생성
+ - https://aws.amazon.com/ko/ 페이지에서 우상단 콘솔에 로그인
+ <img width="464" alt="스크린샷 2021-09-11 오전 11 27 39" src="https://user-images.githubusercontent.com/60597727/132933193-fe3a62d3-7e23-4484-8925-dba3355c2f38.png">
