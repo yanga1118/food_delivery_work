@@ -3,6 +3,9 @@ package food.delivery.work;
 import food.delivery.work.config.kafka.KafkaProcessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,11 +22,13 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryStarted.toJson() + "\n\n");
 
-
-
-        // Sample Logic //
-        // Order order = new Order();
-        // orderRepository.save(order);
+        List<Order> orderList = orderRepository.findByClassId(deliveryStarted.getOrderId());
+        
+        for(Order order : orderList) {
+        	order.setOrderStatus("deliveryStarted");
+        	orderRepository.save(order);
+        	
+        }
 
     }
     @StreamListener(KafkaProcessor.INPUT)
@@ -33,11 +38,13 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryCancled.toJson() + "\n\n");
 
-
-
-        // Sample Logic //
-        // Order order = new Order();
-        // orderRepository.save(order);
+        List<Order> orderList = orderRepository.findByClassId(deliveryCancled.getOrderId());
+        
+        for(Order order : orderList) {
+        	order.setOrderStatus("deliveryCanceled");
+        	orderRepository.save(order);
+        	
+        }
 
     }
    
