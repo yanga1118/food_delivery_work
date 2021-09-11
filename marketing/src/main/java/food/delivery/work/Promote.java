@@ -12,19 +12,15 @@ public class Promote {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    //phoneno String 변경
     private String phoneno;
     private String username;
-    private String orderid;
+    private Long orderid;
     private String orderstatus;
     private String productid;
-    //payStatus 변경
-    private String deliverytatus;
+    private String payStatus;
     private String couponkind;
     private String couponuseyn;
-    //userId 추가
-    private Long userId;
-
+    private String userId;
 
     @PostPersist
     public void onPostPersist(){
@@ -55,13 +51,7 @@ public class Promote {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getOrderid() {
-        return orderid;
-    }
 
-    public void setOrderid(String orderid) {
-        this.orderid = orderid;
-    }
     public String getOrderstatus() {
         return orderstatus;
     }
@@ -76,12 +66,12 @@ public class Promote {
     public void setProductid(String productid) {
         this.productid = productid;
     }
-    public String getdeliverytatus() {
-        return deliverytatus;
+    public String getPayStatus() {
+        return payStatus;
     }
 
-    public void setdeliverytatus(String deliverytatus) {
-        this.deliverytatus = deliverytatus;
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
     public String getCouponkind() {
         return couponkind;
@@ -98,23 +88,16 @@ public class Promote {
         this.couponuseyn = couponuseyn;
     }
 
-    public String getDeliverytatus() {
-        return deliverytatus;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setDeliverytatus(String deliverytatus) {
-        this.deliverytatus = deliverytatus;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    
-
+	public void setOrderid(Long orderid) {
+		this.orderid = orderid;
+	}
 
 }

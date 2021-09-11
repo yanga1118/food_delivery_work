@@ -5,7 +5,7 @@ import java.util.Date;
 public class DeliveryStarted extends AbstractEvent {
 
     private Long id;
-    private String orderId;
+    private Long orderId;
     private String orderStatus;
     private String userName;
     private String address;
@@ -19,6 +19,7 @@ public class DeliveryStarted extends AbstractEvent {
     private Long productPrice;
     private Integer distance;
     private String payStatus;
+    private String userId;
 
     public Long getId() {
         return id;
@@ -27,13 +28,7 @@ public class DeliveryStarted extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getOrderId() {
-        return orderId;
-    }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
     public String getOrderStatus() {
         return orderStatus;
     }
@@ -125,4 +120,23 @@ public class DeliveryStarted extends AbstractEvent {
     public void setPayStatus(String payStatus) {
         this.payStatus = payStatus;
     }
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+    
+	
+    
 }
