@@ -14,25 +14,33 @@ public class Order {
     private Long id;
     private String username;
     private String address;
-    private String phoneno;
-    private String productid;
-    private String qty;
+    private String phoneNo;
+    private String productId;
+    private int qty; //type change
     private String payStatus;
     private String userId;
     private String orderStatus;
     private Date orderDate;
     private String productName;
     private Long productPrice;
+    private String couponId;
+    private String couponKind;
+    private String couponUseYn;
 
     @PostPersist
     public void onPostPersist(){
         OrderPlaced orderPlaced = new OrderPlaced();
         BeanUtils.copyProperties(this, orderPlaced);
         orderPlaced.publishAfterCommit();
+        System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
+    }
 
+    @PostRemove
+    public void onPostRemoved() {
         OrderCanceled orderCanceled = new OrderCanceled();
         BeanUtils.copyProperties(this, orderCanceled);
         orderCanceled.publishAfterCommit();
+        System.out.println("\n\n##### OrderService : onPostRemoved()" + "\n\n");
 
     }
 
@@ -57,25 +65,25 @@ public class Order {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String getPhoneno() {
-        return phoneno;
+    public String getPhoNo() {
+        return phoneNo;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
-    public String getProductid() {
-        return productid;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProductid(String productid) {
-        this.productid = productid;
+    public void setProductid(String productId) {
+        this.productId = productId;
     }
-    public String getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(String qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
     public String getPayStatus() {
@@ -120,6 +128,38 @@ public class Order {
     public void setProductPrice(Long productPrice) {
         this.productPrice = productPrice;
     }
+
+	public String getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
+	public String getCouponKind() {
+		return couponKind;
+	}
+
+	public void setCouponKind(String couponKind) {
+		this.couponKind = couponKind;
+	}
+
+	public String getCouponUseYn() {
+		return couponUseYn;
+	}
+
+	public void setCouponUseYn(String couponUseYn) {
+		this.couponUseYn = couponUseYn;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 
 
 

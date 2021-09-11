@@ -2,7 +2,7 @@ package food.delivery.work;
 import java.util.Date;
 
 
-public class DeliveryCancled extends AbstractEvent {
+public class DeliveryCanceled extends AbstractEvent {
 
     private Long id;
     private Long orderId;

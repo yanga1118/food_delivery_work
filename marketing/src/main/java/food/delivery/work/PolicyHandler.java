@@ -13,22 +13,6 @@ public class PolicyHandler{
     @Autowired PromoteRepository promoteRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverDeliveryStarted_DeliveryCompleted(@Payload DeliveryStarted deliveryStarted){
-
-        if(!deliveryStarted.validate()) return;
-
-        System.out.println("\n\n##### listener DeliveryCompleted : " + deliveryStarted.toJson() + "\n\n");
-
-
-
-        // Sample Logic //
-        // Promote promote = new Promote();
-        // promoteRepository.save(promote);
-
-    }
-
-
-    @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString){}
 
 

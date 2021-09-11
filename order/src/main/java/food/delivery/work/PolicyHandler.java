@@ -32,13 +32,13 @@ public class PolicyHandler{
 
     }
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverDeliveryCancled_UpdateOrderStatus(@Payload DeliveryCancled deliveryCancled){
+    public void wheneverDeliveryCancled_UpdateOrderStatus(@Payload DeliveryCanceled deliveryCanceled){
 
-        if(!deliveryCancled.validate()) return;
+        if(!deliveryCanceled.validate()) return;
 
-        System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryCancled.toJson() + "\n\n");
+        System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryCanceled.toJson() + "\n\n");
 
-        List<Order> orderList = orderRepository.findByClassId(deliveryCancled.getOrderId());
+        List<Order> orderList = orderRepository.findByClassId(deliveryCanceled.getOrderId());
         
         for(Order order : orderList) {
         	order.setOrderStatus("deliveryCanceled");

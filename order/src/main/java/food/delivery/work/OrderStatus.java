@@ -11,10 +11,17 @@ public class OrderStatus {
         @GeneratedValue(strategy=GenerationType.AUTO)
         private Long id;
         private String username;
-        private String orderStatus;
         private String userId;
-
-
+        private Long orderId;
+        private String orderStatus;
+        private String productId;
+        private String productName;
+        private Long productPrice;
+        private int qty; 
+        private Long couponId;
+        private String couponKind;
+        private String couponUseYn;
+        
         public Long getId() {
             return id;
         }
@@ -43,5 +50,71 @@ public class OrderStatus {
         public void setUserId(String userId) {
             this.userId = userId;
         }
+
+		public String getProductId() {
+			return productId;
+		}
+
+		public void setProductId(String productId) {
+			this.productId = productId;
+		}
+
+		public String getProductName() {
+			return productName;
+		}
+
+		public void setProductName(String productName) {
+			this.productName = productName;
+		}
+
+		public Long getProductPrice() {
+			return productPrice;
+		}
+
+		public void setProductPrice(Long productPrice) {
+			this.productPrice = productPrice;
+		}
+
+		public int getQty() {
+			return qty;
+		}
+
+		public void setQty(int qty) {
+			this.qty = qty;
+		}
+
+		public Long getCouponId() {
+			return couponId;
+		}
+
+		public void setCouponId(Long couponId) {
+			this.couponId = couponId;
+		}
+
+		public String getCouponKind() {
+			return couponKind;
+		}
+
+		public void setCouponKind(String couponKind) {
+			this.couponKind = couponKind;
+		}
+
+		public String getCouponUseYn() {
+			return couponUseYn;
+		}
+
+		public void setCouponUseYn(String couponUseYn) {
+			this.couponUseYn = couponUseYn;
+		}
+
+		public Long getOrderId() {
+			return orderId;
+		}
+
+		public void setOrderId(Long orderId) {
+			this.orderId = orderId;
+		}
+        
+        
 
 }

@@ -5,7 +5,7 @@ public class CouponPublished extends AbstractEvent {
     private Long id;
     private Integer phoneno;
     private String username;
-    private String orderid;
+    private Long orderid;
     private String orderstatus;
     private String productid;
     private String paystatus;
@@ -37,11 +37,11 @@ public class CouponPublished extends AbstractEvent {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getOrderid() {
+    public Long getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(String orderid) {
+    public void setOrderid(Long orderid) {
         this.orderid = orderid;
     }
     public String getOrderstatus() {

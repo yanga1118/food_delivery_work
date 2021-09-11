@@ -8,7 +8,7 @@ public class OrderPlaced extends AbstractEvent {
     private String address;
     private String phoneno;
     private String productid;
-    private String qty;
+    private int qty;
     private String userId;
     private String payStatus;
     private String orderStatus;
@@ -55,11 +55,11 @@ public class OrderPlaced extends AbstractEvent {
     public void setProductid(String productid) {
         this.productid = productid;
     }
-    public String getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(String qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
     public String getUserId() {
