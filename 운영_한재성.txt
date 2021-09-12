@@ -228,24 +228,3 @@ docker build -t vbaorov-test .
 
 
 ======================================================================================================================================================================
-<VMWARE 기반으로 재설치> 
-
-1. Kubectl 설치
-<참고 - 공식문서> https://kubernetes.io/ko/docs/tasks/tools/install-kubectl-linux/
-
-sudo snap install curl
-
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
-2. Maven 설치
-
-sudo apt-get install maven
-
-3. Docker 설치
-
-sudo apt install docker.io
-
-4. AWS CLI 설치
-
-sudo apt install awscli
-
