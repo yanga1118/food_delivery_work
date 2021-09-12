@@ -138,8 +138,8 @@ Client:
 vbaorov@LAPTOP-MFPRU95A:~$ aws configure 
 
 --------↓ 입력예시 ↓---------- 
-AWS Access Key ID [None]: AKIAZPKSFUUGGTEQYQVM 
-AWS Secret Access Key [None]: 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 
+AWS Access Key ID [None]: 
+AWS Secret Access Key [None]: 
 Default region name [None]: ap-northeast-2 
 Default output format [None]: json
 
