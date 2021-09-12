@@ -1,9 +1,89 @@
 운영 SETTING * WINDOWS 기준 -- 팀과제 / 개인과제 모두 루트계정 하위에 IAM 계정을 제공한다고 합니다. 따라서 IAM 계정이 생성되었다고 가정하고 그 이후의 상황을 정리합니다.
 로컬 윈도우에 우분투설치 (Microsoft 스토어에 윈도우용 우분투 설치)
+
+
 <참고 - 우분투 패키지 관리 툴> http://taewan.kim/tip/apt-apt-get/
 
 우분투에 mvn 설치 (환경변수 세팅은 msaschool 참고)
-sudo apt-get install maven
+wget https://dlcdn.apache.org/maven/maven-3/3.8.2/binaries/apache-maven-3.8.2-bin.tar.gz
+
+tar -xvzf apache-maven-3.8.2-bin.tar.gz
+
+mvn -version
+
+The JAVA_HOME environment variable is not defined correctly
+This environment variable is needed to run this program
+NB: JAVA_HOME should point to a JDK not a JRE
+
+JAVA가 설치되어있지 않아서 실행불가. 
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install openjdk-11-jdk
+
+javac -version
+javac 11.0.11가 정상적으로 설치되었다는 것 확인. 
+
+이후 환경변수 세팅
+
+sudo gedit ~/.bashrc
+
+Unable to init server: Could not connect: Connection refused
+
+(gedit:11456): Gtk-WARNING **: 10:30:16.904: cannot open display:
+
+거부당해서 수정불가. 
+그래서 X Launcher 설치
+-------------------------------------------------------------------------------------------------
+To fix this problem
+
+Step 1- Download and Install this Windows X Server https://sourceforge.net/projects/vcxsrv/
+
+Step 2- Open XLaunch
+
+Step 3- Select " Full screen " option
+
+Step 4- Choose " Start no client " option
+
+Step 5- Simply do next and finish
+
+Step 6- Open terminal and type :
+
+              export DISPLAY=0:0
+-------------------------------------------------------------------------------------------------
+<참고> https://m.blog.naver.com/kthchunjae/222088483224
+
+# ~/.bashrc 열기
+$ sudo gedit ~/.bashrc
+
+# ~/.bashrc 파일에 설정 추가
+# JAVA_HOME settings
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+export PATH=$PATH:$JAVA_HOME/bin
+
+# 현재 실행중인 shell에 즉시 적용 (새로 실행한 shell에서는 필요없음)
+$ source ~/.bashrc
+
+# 설정 확인
+$ echo $JAVA_HOME
+/usr/lib/jvm/java-11-openjdk-am64
+로 JAVA 환경변수 설정
+
+이후에 
+
+udo apt-get install maven
+
+로 MAVEN 설치
+
+확인
+vbaorov@LAPTOP-MFPRU95A:~$ mvn --version
+Apache Maven 3.6.3
+Maven home: /usr/share/maven
+Java version: 11.0.11, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "4.4.0-18362-microsoft", arch: "amd64", family: "unix"
+
+-----------------------------------------------------------------------------------------------
 
 우분투에 Kubectl 설치
 <참고 - 공식문서> https://kubernetes.io/ko/docs/tasks/tools/install-kubectl-linux/
@@ -20,6 +100,26 @@ unzip awscliv2.zip
 sudo ./aws/install
 
 설치 후에 aws --version 로 설치여부 확인
+
+---------------------------------------------------------------------------------------------------
+
+우분투에 Docker 설치
+
+sudo apt install docker.io
+
+설치 후 확인 
+vbaorov@LAPTOP-MFPRU95A:~$ docker version
+Client:
+ Version:           20.10.7
+ API version:       1.41
+ Go version:        go1.13.8
+ Git commit:        20.10.7-0ubuntu1~20.04.1
+ Built:             Wed Aug  4 22:52:25 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+ 
+
 
 ------------------------------------------↑↑↑↑↑↑ 여기까지 로컬세팅 ↑↑↑↑↑↑ -------------------------------------------------
 <우분투에서 작업시작> 
@@ -49,6 +149,16 @@ Default output format [None]: json
 3. eksctl 명령어로 클러스터 생성 (시간 좀 걸림)
 eksctl create cluster --name (vbaorov-eks) --version (1.18) --nodegroup-name standard-workers --node-type t3.medium --nodes 2 --nodes-min 1 --nodes-max 2
 
+eksctl: command not found 가 나온다면, 
+
+https://docs.aws.amazon.com/ko_kr/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-eksctl.html
+의 가이드에 따라 eksctl 설치 후 위의 명령어 다시 실행
+
+curl --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp sudo mv /tmp/eksctl /usr/local/bin
+
+eksctl version 으로 확인
+
+
 4. AWS 클러스터 토큰 가져오기
 aws eks --region (ap-northeast-2) update-kubeconfig --name (vbaorov-eks)
 kubectl get all
@@ -76,7 +186,7 @@ Login Succeeded
 오류(unknown flag: --password-stdin) 발생 시,
 docker login --username AWS -p $(aws ecr get-login-password --region (Region-Code)) (Account-Id).dkr.ecr.(Region-Code).amazonaws.com/
 
-7. EKS 모니터링을 위한 Metric-Server 설치
+7. EKS 모니터링을 위한 Metric-Server 설치 (파이널 평가때 반드시 해야함)
 
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
 
@@ -104,29 +214,15 @@ ip-192-168-58-44.ap-northeast-2.compute.internal    43m          2%     492Mi   
 ip-192-168-73-119.ap-northeast-2.compute.internal   54m          2%     517Mi           15%
 
 
-7. Metric-Server 설치 (파이널 평가때 반드시 해야함) 
+도커도커도커도커
 
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
-
-
-5. EKS 설치
-
-curl --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp sudo mv /tmp/eksctl /usr/local/bin 설치 확인 eksctl version
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
 
 
-Kubectl Context 설정
-aws eks update-kubeconfig --name (클러스터명)
+도저히 해결불가
 
-ECR 리포지토리 생성 <참고> https://blog.naver.com/sssang97/222459232906
 
-도커 클라이언트 AWS 인증
-
-생성된 ECR 리포지토리로 들어가 우상단 푸시 명령 보기를 통해 복붙 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 651396752652.dkr.ecr.ap-northeast-2.amazonaws.com
-
-Login Succeeded 뜨면 성공
-
-도커 이미지를 처음 생성할 때 <참고> https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/docker-basics.html
-인스턴스 생성 필요 - 인스턴스 연결 - .... 계속 진행
 
 docker build -t vbaorov-test .
 
