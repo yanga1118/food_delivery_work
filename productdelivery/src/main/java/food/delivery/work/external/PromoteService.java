@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name="marketing", url = "http://loalhost:8083")
 public interface PromoteService {
   
-    @RequestMapping(method=RequestMethod.PATCH, path="/promotes/publishCoupon" , consumes="aplication/json")
+    @RequestMapping(method=RequestMethod.POST, path="/promotes/createPromoteInfo" , consumes="aplication/json")
     public boolean publishCoupon(@RequestParam String Id, @RequestParam String userid , @RequestParam String status ,  @RequestParam String phoneno );
 
 }
