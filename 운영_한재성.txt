@@ -214,17 +214,7 @@ ip-192-168-58-44.ap-northeast-2.compute.internal    43m          2%     492Mi   
 ip-192-168-73-119.ap-northeast-2.compute.internal   54m          2%     517Mi           15%
 
 
-도커도커도커도커
 
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-
-
-도저히 해결불가
-
-
-
-docker build -t vbaorov-test .
 
 
 ======================================================================================================================================================================
