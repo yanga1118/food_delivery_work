@@ -27,7 +27,6 @@ public class PolicyHandler{
         for(Order order : orderList) {
         	order.setOrderStatus("deliveryStarted");
         	orderRepository.save(order);
-        	
         }
 
     }
