@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -22,12 +23,11 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryStarted.toJson() + "\n\n");
 
-        List<Order> orderList = orderRepository.findByClassId(deliveryStarted.getOrderId());
+        Optional<Order> orderResponse = orderRepository.findById(deliveryStarted.getOrderId());
         
-        for(Order order : orderList) {
-        	order.setOrderStatus("deliveryStarted");
-        	orderRepository.save(order);
-        }
+        Order order = orderResponse.get();
+    	order.setOrderStatus("deliveryStarted");
+    	orderRepository.save(order);
 
     }
     @StreamListener(KafkaProcessor.INPUT)
@@ -37,19 +37,11 @@ public class PolicyHandler{
 
         System.out.println("\n\n##### listener UpdateOrderStatus : " + deliveryCanceled.toJson() + "\n\n");
 
-        List<Order> orderList = orderRepository.findByClassId(deliveryCanceled.getOrderId());
+        Optional<Order> orderResponse = orderRepository.findById(deliveryCanceled.getOrderId());
         
-        for(Order order : orderList) {
-        	order.setOrderStatus("deliveryCanceled");
-        	orderRepository.save(order);
-        	
-        }
+        Order order = orderResponse.get();
+    	order.setOrderStatus("deliveryCanceled");
+    	orderRepository.save(order);
 
     }
-   
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString){}
-
-
 }

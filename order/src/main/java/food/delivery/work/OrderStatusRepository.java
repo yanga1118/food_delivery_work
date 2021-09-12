@@ -9,5 +9,4 @@ public interface OrderStatusRepository extends CrudRepository<OrderStatus, Long>
 	
 	List<OrderStatus> findByOrderId(Long orderId);
 
-
 }
