@@ -26,10 +26,10 @@ spring:
       bindings:
         event-in:
           group: productdelivery
-          destination: yogiyo
+          destination: eventTopic
           contentType: application/json
         event-out:
-          destination: yogiyo
+          destination: eventTopic
           contentType: application/json
 
 logging:
@@ -58,8 +58,8 @@ spring:
       bindings:
         event-in:
           group: productdelivery
-          destination: yogiyo
+          destination: eventTopic
           contentType: application/json
         event-out:
-          destination: yogiyo
+          destination: eventTopic
           contentType: application/json
