@@ -24,10 +24,19 @@ public class PolicyHandler{
          delivery.setCustomerId(orderPlaced.getUserId());
          delivery.setOrderDate(orderPlaced.getOrderDate());
          delivery.setPhoneNo(orderPlaced.getPhoneno());
+         delivery.setProductId(orderPlaced.getProductid());
+         delivery.setQty(parseInt(orderPlaced.getQty())); 
          delivery.setDeliveryStatus("delivery Started");
+
+         System.out.println("==================================");
+         System.out.println(orderPlaced.toString());
+         System.out.println("==================================");
 
          stockDeliveryRepository.save(delivery);
 
+    }
+    private Integer parseInt(String qty) {
+        return null;
     }
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled){
