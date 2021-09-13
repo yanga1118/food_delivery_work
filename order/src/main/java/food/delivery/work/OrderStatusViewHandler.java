@@ -29,7 +29,7 @@ public class OrderStatusViewHandler {
             orderStatus.setUserId(orderPlaced.getUserId());
             orderStatus.setOrderId(orderPlaced.getId());
             orderStatus.setOrderStatus("OrderPlaced");
-            orderStatus.setProductId(orderPlaced.getProductid());
+            orderStatus.setProductId(orderPlaced.getProductId());
             orderStatus.setProductName(orderPlaced.getProductName());
             orderStatus.setProductPrice(orderPlaced.getProductPrice());
             orderStatus.setQty(orderPlaced.getQty());
