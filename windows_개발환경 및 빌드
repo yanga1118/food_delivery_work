@@ -1,7 +1,26 @@
 Windows 환경 기준 개발 환경 
 
 프로그램 설치
+
+[MSASchool]
+http://34.117.35.195/operation/introduction/util-and-tool/
+
  : JDK 11 / Maven 3.8.3 설치 / Kafka 설치 / httpie 설치
+
+[JDK 11 설치]
+https://crazykim2.tistory.com/478
+
+[카프카 설치]
+- https://kafka.apache.org/downloads 에서 다운로드
+
+[MAVEN 설치]
+https://jiwondh.github.io/2018/08/08/maven-install/
+
+[VSCODE]
+https://code.visualstudio.com/download
+
+[httpie]
+https://github.com/TheOpenCloudEngine/uEngine-cloud/wiki/Httpie-%EC%84%A4%EC%B9%98
 
 
 [카프카 실행]
@@ -21,7 +40,9 @@ kafka_2.12-2.8.0\bin\windows\kafka-topics.bat --bootstrap -server http://localho
 
 kafka_2.12-2.8.0\bin\windows\kafka-console-consumer.bat --bootstrap-server http://localhost:9092 --topic eventTopic --from-beginning
 
-6. VS Code 실행 - 소스 보기 
+[VSCode 열기]
+
+Terminal > New Terminal로 열명 프로젝트의 root부터 시작
 
 [MAVEN 사용한 빌드]
 1. 프로젝트 Root (ex. C:\work\food_delivery_work)
