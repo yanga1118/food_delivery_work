@@ -1,4 +1,5 @@
 package food.delivery.work;
+
 import java.util.Date;
 
 public class DeliveryStarted extends AbstractEvent {
@@ -18,6 +19,10 @@ public class DeliveryStarted extends AbstractEvent {
     private Long productPrice;
     private Integer distance;
     private String payStatus;
+
+    public DeliveryStarted(){
+        super();
+    }
 
     public Long getId() {
         return id;

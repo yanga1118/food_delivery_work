@@ -18,7 +18,7 @@ public class OrderStatus {
         private String productName;
         private Long productPrice;
         private int qty; 
-        private Long couponId;
+        private String couponId;
         private String couponKind;
         private String couponUseYn;
         
@@ -83,11 +83,11 @@ public class OrderStatus {
 			this.qty = qty;
 		}
 
-		public Long getCouponId() {
+		public String getCouponId() {
 			return couponId;
 		}
 
-		public void setCouponId(Long couponId) {
+		public void setCouponId(String couponId) {
 			this.couponId = couponId;
 		}
 

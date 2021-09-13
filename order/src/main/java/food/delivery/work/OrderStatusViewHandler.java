@@ -89,13 +89,13 @@ public class OrderStatusViewHandler {
 
             if (!couponPublished.validate()) return;
 
-            List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponPublished.getOrderid());
+            List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponPublished.getOrderId());
             
             for(OrderStatus orderStatus: orderStatusList) {
             	orderStatus.setOrderStatus("DeliveryCanceled");
-            	orderStatus.setCouponId(couponPublished.getId());
-            	orderStatus.setCouponKind(couponPublished.getCouponkind());
-            	orderStatus.setCouponUseYn(couponPublished.getCouponuseyn());
+            	orderStatus.setCouponId(couponPublished.getCouponId());
+            	orderStatus.setCouponKind(couponPublished.getCouponKind());
+            	orderStatus.setCouponUseYn(couponPublished.getCouponUseYn());
             	orderStatusRepository.save(orderStatus);
             	
             	System.out.println("\n\n##### OrderStatus : whenCouponPublished_then_UPDATE_1" + "\n\n");
