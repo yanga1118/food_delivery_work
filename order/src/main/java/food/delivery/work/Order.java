@@ -33,6 +33,8 @@ public class Order {
         BeanUtils.copyProperties(this, orderPlaced);
         orderPlaced.publishAfterCommit();
         System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
+        System.out.println("\n\n##### orderplace : "+orderPlaced.toJson() + "\n\n");
+        System.out.println("\n\n##### productid : "+this.productId + "\n\n");
     }
 
     @PostRemove

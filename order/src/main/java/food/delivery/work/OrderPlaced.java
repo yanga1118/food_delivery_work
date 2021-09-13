@@ -6,7 +6,7 @@ public class OrderPlaced extends AbstractEvent {
     private Long id;
     private String username;
     private String address;
-    private String phoneno;
+    private String phoneNo;
     private String productId;
     private int qty;
     private String userId;
@@ -41,18 +41,18 @@ public class OrderPlaced extends AbstractEvent {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String getPhoneno() {
-        return phoneno;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
     public String getProductId() {
         return productId;
     }
 
-    public void setProductid(String productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
     public int getQty() {
