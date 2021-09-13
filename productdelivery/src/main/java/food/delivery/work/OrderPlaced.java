@@ -1,5 +1,4 @@
 package food.delivery.work;
-
 import java.util.Date;
 
 public class OrderPlaced extends AbstractEvent {
@@ -7,15 +6,19 @@ public class OrderPlaced extends AbstractEvent {
     private Long id;
     private String username;
     private String address;
-    private String phoneno;
-    private String productid;
-    private String qty;
+    private String phoneNo;
+    private String productId;
+    private int qty;
     private String userId;
     private String payStatus;
     private String orderStatus;
     private Date orderDate;
     private String productName;
     private Long productPrice;
+
+    public OrderPlaced(){
+        super();
+    }
 
     public Long getId() {
         return id;
@@ -38,25 +41,25 @@ public class OrderPlaced extends AbstractEvent {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String getPhoneno() {
-        return phoneno;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
-    public String getProductid() {
-        return productid;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProductid(String productid) {
-        this.productid = productid;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
-    public String getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(String qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
     public String getUserId() {

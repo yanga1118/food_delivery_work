@@ -29,13 +29,34 @@ public class StockDelivery {
     private String customerId;
     private String deliveryStatus;
     private Date deliveryDate;
-    private Long userId;
+    private String userId;
   
     @PostPersist
-    public void onPostPersist(){
-        DeliveryStarted deliveryStarted = new DeliveryStarted();
-        BeanUtils.copyProperties(this, deliveryStarted);
-        deliveryStarted.publishAfterCommit();
+    public void onPostPersist() throws Exception{
+
+    	Promote promote = new Promote();
+        promote.setPhoneNo(this.phoneNo); 
+        promote.setUserId(this.userId); 
+        promote.setUsername(this.userName); 
+        promote.setOrderId(this.orderId); 
+        promote.setOrderStatus(this.orderStatus); 
+        promote.setProductId(this.productId); 
+    	
+        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon(promote);
+
+        if(result){
+        	System.out.println("----------------");
+            System.out.println("Coupon Published");
+            System.out.println("----------------");
+	       	DeliveryStarted deliveryStarted = new DeliveryStarted();
+	        BeanUtils.copyProperties(this, deliveryStarted);
+	        deliveryStarted.publishAfterCommit();
+        }else {
+        	throw new RollbackException("Failed during coupon publish");
+        }
+        
+        
+
     }
 
     @PreRemove
@@ -44,7 +65,7 @@ public class StockDelivery {
         BeanUtils.copyProperties(this, deliveryCancled);
         deliveryCancled.publishAfterCommit();
     }
-
+/*
     @PostUpdate
     public void onPostUpdate(){
        // DeliveryCompleted deliveryCompleted = new DeliveryCompleted();
@@ -57,7 +78,7 @@ public class StockDelivery {
            System.out.println("Coupon Published");
        }
     }
-   
+*/ 
   
    
 
@@ -174,11 +195,11 @@ public class StockDelivery {
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
  

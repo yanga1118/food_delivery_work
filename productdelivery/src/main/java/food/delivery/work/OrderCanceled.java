@@ -1,20 +1,23 @@
 package food.delivery.work;
-
 import java.util.Date;
 
 public class OrderCanceled extends AbstractEvent {
 
     private Long id;
-    private String productid;
-    private String qty;
+    private String productId;
+    private int qty;
     private String payStatus;
     private String userId;
     private String username;
     private String address;
-    private String phoneno;
+    private String phoneNo;
     private String orderStatus;
     private Date orderDate;
     private Long productPrice;
+
+    public OrderCanceled(){
+        super();
+    }
 
     public Long getId() {
         return id;
@@ -23,18 +26,18 @@ public class OrderCanceled extends AbstractEvent {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getProductid() {
-        return productid;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProductid(String productid) {
-        this.productid = productid;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
-    public String getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(String qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
     public String getPayStatus() {
@@ -65,12 +68,12 @@ public class OrderCanceled extends AbstractEvent {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String getPhoneno() {
-        return phoneno;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
     public String getOrderStatus() {
         return orderStatus;

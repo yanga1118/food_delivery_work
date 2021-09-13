@@ -23,14 +23,16 @@ public class PolicyHandler{
          delivery.setOrderId(orderPlaced.getId());
          delivery.setCustomerId(orderPlaced.getUserId());
          delivery.setOrderDate(orderPlaced.getOrderDate());
-         delivery.setPhoneNo(orderPlaced.getPhoneno());
-         delivery.setProductId(orderPlaced.getProductid());
-         delivery.setQty(parseInt(orderPlaced.getQty())); 
+         delivery.setPhoneNo(orderPlaced.getPhoneNo());
+         delivery.setProductId(orderPlaced.getProductId());
+         delivery.setQty(orderPlaced.getQty()); 
          delivery.setDeliveryStatus("delivery Started");
 
          System.out.println("==================================");
-         System.out.println(orderPlaced.toString());
+         System.out.println(orderPlaced.getId());
+         System.out.println(orderPlaced.toJson());
          System.out.println("==================================");
+         System.out.println(delivery.getOrderId());
 
          stockDeliveryRepository.save(delivery);
 
