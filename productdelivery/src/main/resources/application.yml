@@ -2,7 +2,7 @@ server:
   port: 8080
 
 ---
-
+  
 spring:
   profiles: default
   jpa:
@@ -36,6 +36,13 @@ logging:
   level:
     org.hibernate.type: trace
     org.springframework.cloud: debug
+
+datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cloud12st.ck7n6wloicx4.ap-northeast-2.rds.amazonaws.com:3306/cloud12st
+    username: root
+    password: cloud#1234
+    
 server:
   port: 8081
 ---
