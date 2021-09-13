@@ -44,4 +44,20 @@ public class PolicyHandler{
     	orderRepository.save(order);
 
     }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverCouponPublished_UpdateCouponStatus(@Payload CouponPublished couponpublished){
+
+        if(!couponpublished.validate()) return;
+
+        System.out.println("\n\n##### listener UpdateOrderStatus : " + couponpublished.toJson() + "\n\n");
+
+        Optional<Order> orderResponse = orderRepository.findById(couponpublished.getOrderId());
+        
+        Order order = orderResponse.get();
+    	order.setCouponId(couponpublished.getCouponId());
+    	order.setCouponKind(couponpublished.getCouponKind());
+    	order.setCouponUseYn(couponpublished.getCouponUseYn());
+    	orderRepository.save(order);
+
+    }
 }
