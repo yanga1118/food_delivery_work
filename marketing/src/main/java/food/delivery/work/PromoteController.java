@@ -26,15 +26,15 @@ import java.util.Optional;
         boolean result = false;
         
         Promote promote = new Promote();
-        promote.setPhoneno(param.get("phoneNo")); 
+        promote.setPhoneNo(param.get("phoneNo")); 
         promote.setUserId(param.get("userId")); 
         promote.setUsername(param.get("userName")); 
-        promote.setOrderid(Long.parseLong(param.get("orderId"))); 
-        promote.setOrderstatus(param.get("orderStatus")); 
-        promote.setProductid(param.get("productId")); 
-        promote.setPayStatus(param.get("productStatus")); 
-        promote.setCouponkind("DISCOUNT");
-        promote.setCouponuseyn("N");
+        promote.setOrderId(Long.parseLong(param.get("orderId"))); 
+        promote.setOrderStatus(param.get("orderStatus")); 
+        promote.setProductId(param.get("productId"));
+        promote.setCouponId("COUPON1");
+        promote.setCouponKind("DISCOUNT");
+        promote.setCouponUseYn("N");
         promoteRepository.save(promote);
         try {
             promote = promoteRepository.save(promote);

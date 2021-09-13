@@ -3,80 +3,108 @@ package food.delivery.work;
 public class CouponPublished extends AbstractEvent {
 
     private Long id;
-    private Integer phoneno;
+    private String phoneNo;
     private String username;
-    private Long orderid;
-    private String orderstatus;
-    private String productid;
-    private String paystatus;
-    private String couponkind;
-    private String couponuseyn;
+    private Long orderId;
+    private String orderStatus;
+    private String productId;
+    private String payStatus;
+    private String couponId;
+    private String couponKind;
+    private String couponUseYn;
+    private String userId;
 
     public CouponPublished(){
         super();
     }
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Integer getPhoneno() {
-        return phoneno;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setPhoneno(Integer phoneno) {
-        this.phoneno = phoneno;
-    }
-    public String getUsername() {
-        return username;
-    }
+	public String getPhoneNo() {
+		return phoneNo;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public Long getOrderid() {
-        return orderid;
-    }
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
 
-    public void setOrderid(Long orderid) {
-        this.orderid = orderid;
-    }
-    public String getOrderstatus() {
-        return orderstatus;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setOrderstatus(String orderstatus) {
-        this.orderstatus = orderstatus;
-    }
-    public String getProductid() {
-        return productid;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setProductid(String productid) {
-        this.productid = productid;
-    }
-    public String getPaystatus() {
-        return paystatus;
-    }
+	public Long getOrderId() {
+		return orderId;
+	}
 
-    public void setPaystatus(String paystatus) {
-        this.paystatus = paystatus;
-    }
-    public String getCouponkind() {
-        return couponkind;
-    }
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setCouponkind(String couponkind) {
-        this.couponkind = couponkind;
-    }
-    public String getCouponuseyn() {
-        return couponuseyn;
-    }
+	public String getOrderStatus() {
+		return orderStatus;
+	}
 
-    public void setCouponuseyn(String couponuseyn) {
-        this.couponuseyn = couponuseyn;
-    }
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
+	}
+
+	public String getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(String couponId) {
+		this.couponId = couponId;
+	}
+
+	public String getCouponKind() {
+		return couponKind;
+	}
+
+	public void setCouponKind(String couponKind) {
+		this.couponKind = couponKind;
+	}
+
+	public String getCouponUseYn() {
+		return couponUseYn;
+	}
+
+	public void setCouponUseYn(String couponUseYn) {
+		this.couponUseYn = couponUseYn;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+    
 }
