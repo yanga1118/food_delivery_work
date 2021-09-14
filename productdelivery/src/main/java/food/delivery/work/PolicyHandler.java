@@ -8,6 +8,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PolicyHandler{
     @Autowired StockDeliveryRepository stockDeliveryRepository;
@@ -40,6 +42,7 @@ public class PolicyHandler{
     private Integer parseInt(String qty) {
         return null;
     }
+    /*
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled){
 
@@ -47,7 +50,26 @@ public class PolicyHandler{
 
         Long orderId =Long.valueOf(orderCanceled.getId());
         stockDeliveryRepository.deleteById(orderId); 
+        
+        stockDeliveryRepository.s
 
+    }
+    */
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled) {
+    	
+    	if(!orderCanceled.validate()) return;
+    	
+        List<StockDelivery> deliveryList = stockDeliveryRepository.findByOrderId(orderCanceled.getId());
+
+        for (StockDelivery delivery:deliveryList)
+        {
+            delivery.setDeliveryStatus("delivery Canceled");
+            stockDeliveryRepository.save(delivery);
+        }
+
+       
     }
 
   
