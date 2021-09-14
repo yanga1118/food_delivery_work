@@ -41,17 +41,15 @@ public class Order {
         
     }
 
-    /*
-    @PostRemove
-    public void onPostRemoved() {
-        OrderCanceled orderCanceled = new OrderCanceled();
+    @PostUpdate
+    public void onPostUpdate() {
+    	
+    	System.out.println("\n\n##### #$!%#$%@#$%@#$%@#$%@#$%@#$% test !@#$!@#$!@#$!@#$!@#$@!#$\n\n");
+    	OrderCanceled orderCanceled = new OrderCanceled();
         BeanUtils.copyProperties(this, orderCanceled);
         orderCanceled.publishAfterCommit();
-        System.out.println("\n\n##### OrderService : onPostRemoved()" + "\n\n");
-
     }
-    */
-
+    
     public Long getId() {
         return id;
     }
