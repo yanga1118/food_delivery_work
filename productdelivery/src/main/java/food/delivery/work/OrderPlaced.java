@@ -104,4 +104,6 @@ public class OrderPlaced extends AbstractEvent {
     public void setProductPrice(Long productPrice) {
         this.productPrice = productPrice;
     }
+
+    
 }

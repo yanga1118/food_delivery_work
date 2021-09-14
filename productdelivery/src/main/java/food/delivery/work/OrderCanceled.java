@@ -13,7 +13,7 @@ public class OrderCanceled extends AbstractEvent {
     private String phoneNo;
     private String orderStatus;
     private Date orderDate;
-    private Long productPrice;
+    private Long productPrice;  
 
     public OrderCanceled(){
         super();
@@ -96,4 +96,7 @@ public class OrderCanceled extends AbstractEvent {
     public void setProductPrice(Long productPrice) {
         this.productPrice = productPrice;
     }
+
+    
+    
 }

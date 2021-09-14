@@ -29,14 +29,19 @@ public class Order {
 
     @PostPersist
     public void onPostPersist(){
+    	
+    	
         OrderPlaced orderPlaced = new OrderPlaced();
         BeanUtils.copyProperties(this, orderPlaced);
         orderPlaced.publishAfterCommit();
         System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
         System.out.println("\n\n##### orderplace : "+orderPlaced.toJson() + "\n\n");
         System.out.println("\n\n##### productid : "+this.productId + "\n\n");
+        
+        
     }
 
+    /*
     @PostRemove
     public void onPostRemoved() {
         OrderCanceled orderCanceled = new OrderCanceled();
@@ -45,6 +50,7 @@ public class Order {
         System.out.println("\n\n##### OrderService : onPostRemoved()" + "\n\n");
 
     }
+    */
 
     public Long getId() {
         return id;
@@ -162,8 +168,5 @@ public class Order {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-
-
-
 
 }
