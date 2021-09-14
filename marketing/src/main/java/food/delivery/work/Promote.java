@@ -25,9 +25,16 @@ public class Promote {
 
     @PostPersist
     public void onPostPersist(){
-        CouponPublished couponPublished = new CouponPublished();
-        BeanUtils.copyProperties(this, couponPublished);
-        couponPublished.publishAfterCommit();
+    	if(this.couponId == "" || this.couponId == null) {
+	        CouponPublished couponPublished = new CouponPublished();
+	        BeanUtils.copyProperties(this, couponPublished);
+	        couponPublished.publishAfterCommit();
+    		
+    	}else {
+	        CouponPublished couponPublished = new CouponPublished();
+	        BeanUtils.copyProperties(this, couponPublished);
+	        couponPublished.publishAfterCommit();
+    	}
 
     }
 
