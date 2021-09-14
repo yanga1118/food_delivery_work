@@ -1,16 +1,7 @@
 package food.delivery.work;
 
-import javax.persistence.*;
-import org.springframework.beans.BeanUtils;
-import java.util.List;
-import java.util.Date;
+public class CouponCanceled extends AbstractEvent {
 
-@Entity
-@Table(name="Promote_table")
-public class Promote {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String phoneNo;
     private String username;
@@ -23,19 +14,8 @@ public class Promote {
     private String couponUseYn;
     private String userId;
 
-    @PostPersist
-    public void onPostPersist(){
-    	if(this.couponId == "" || this.couponId == null) {
-	        CouponPublished couponPublished = new CouponPublished();
-	        BeanUtils.copyProperties(this, couponPublished);
-	        couponPublished.publishAfterCommit();
-    		
-    	}else {
-	        CouponPublished couponPublished = new CouponPublished();
-	        BeanUtils.copyProperties(this, couponPublished);
-	        couponPublished.publishAfterCommit();
-    	}
-
+    public CouponCanceled(){
+        super();
     }
 
 	public Long getId() {
@@ -126,6 +106,5 @@ public class Promote {
 		this.userId = userId;
 	}
 
-
-
+    
 }

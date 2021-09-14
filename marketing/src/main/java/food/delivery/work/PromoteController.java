@@ -45,5 +45,29 @@ import java.util.Optional;
 
         return result;
     }
+     
+     @PostMapping(value = "/cancelCoupon")
+     public boolean cancelCoupon(@RequestBody Map<String, String> param) {
+
+        boolean result = false;
+        
+        List<Promote> promoteList = promoteRepository.findByOrderId(Long.parseLong(param.get("orderId")));
+        
+        try {
+	        for (Promote promote:promoteList)
+	        {
+	        	promote.setCouponId("");
+	        	promote.setCouponKind("");
+	            promote.setCouponUseYn("");
+	            promoteRepository.save(promote);
+	            result = true;
+	        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return result;
+
+    }
 	 
  }

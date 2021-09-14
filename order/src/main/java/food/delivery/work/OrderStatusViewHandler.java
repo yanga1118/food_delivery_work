@@ -105,6 +105,29 @@ public class OrderStatusViewHandler {
             e.printStackTrace();
         }
     }
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenCouponCanceled_then_UPDATE_1 (@Payload CouponPublished couponPublished) {
+        try {
+
+            if (!couponPublished.validate()) return;
+
+            List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponPublished.getOrderId());
+            
+            for(OrderStatus orderStatus: orderStatusList) {
+            	orderStatus.setOrderStatus("DeliveryCanceled");
+            	orderStatus.setCouponId(couponPublished.getCouponId());
+            	orderStatus.setCouponKind(couponPublished.getCouponKind());
+            	orderStatus.setCouponUseYn(couponPublished.getCouponUseYn());
+            	orderStatusRepository.save(orderStatus);
+            	
+            	System.out.println("\n\n##### OrderStatus : whenCouponCanceled_then_UPDATE_1" + "\n\n");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
 
