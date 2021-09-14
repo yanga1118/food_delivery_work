@@ -60,7 +60,7 @@ public class PolicyHandler{
     public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled) {
     	
     	if(!orderCanceled.validate()) return;
-    	
+    	System.out.println("\n\n##### #$!%#$%@#$%@#$%@#$%@#$%@#$% test !@#$!@#$!@#$!@#$!@#$@!#$\n\n");
         List<StockDelivery> deliveryList = stockDeliveryRepository.findByOrderId(orderCanceled.getId());
 
         for (StockDelivery delivery:deliveryList)
