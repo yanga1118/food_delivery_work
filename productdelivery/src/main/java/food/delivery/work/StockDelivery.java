@@ -44,10 +44,11 @@ public class StockDelivery {
         promote.setOrderId(this.orderId); 
         promote.setOrderStatus(this.orderStatus); 
         promote.setProductId(this.productId); 
-        
+        System.out.println("\n\nBEFORE DELIVERY_STARTED DELIVERY_STARTED#$\n\n");
+        System.out.println(""+this.deliveryStatus);
         // deliveryStatus 따라 로직 분기
-        if(DELIVERY_STARTED.equals(this.deliveryStatus)){
-        
+        if(DELIVERY_STARTED == this.deliveryStatus){
+        	System.out.println("\n\n#DELIVERY_STARTED DELIVERY_STARTED#$\n\n");
 	        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon(promote);
 	
 	        if(result){
@@ -62,8 +63,8 @@ public class StockDelivery {
 	        }
         
         }
-        else if(DELIVERY_CANCELED.equals(this.deliveryStatus)) {
-        	
+        else if(DELIVERY_CANCELED == this.deliveryStatus) {
+        	System.out.println("\n\n#DELIVERY_CANCELED DELIVERY_CANCELED#$\n\n");
 	        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).cancelCoupon(promote);
 	    	
 	        if(result){

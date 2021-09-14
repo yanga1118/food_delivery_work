@@ -61,10 +61,13 @@ public class PolicyHandler{
     	
     	if(!orderCanceled.validate()) return;
     	System.out.println("\n\n##### #$!%#$%@#$%@#$%@#$%@#$%@#$% test !@#$!@#$!@#$!@#$!@#$@!#$\n\n");
+    	System.out.println("\n\n"+orderCanceled.getId());
         List<StockDelivery> deliveryList = stockDeliveryRepository.findByOrderId(orderCanceled.getId());
-
+        System.out.println("\n\n"+deliveryList.size() );
+        System.out.println("\n\n"+orderCanceled.getId());
         for (StockDelivery delivery:deliveryList)
         {
+        	System.out.println("\n\n"+orderCanceled.getId());
             delivery.setDeliveryStatus("delivery Canceled");
             stockDeliveryRepository.save(delivery);
         }
