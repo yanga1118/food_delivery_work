@@ -13,4 +13,12 @@ public class PromoteServiceFallback implements PromoteService {
         System.out.println("Circuit breaker has been opened. Fallback returned instead.");
         return false;
     }
+    
+    @Override
+    public boolean cancelCoupon(Promote promote) {
+        //do nothing if you want to forgive it
+
+        System.out.println("Circuit breaker has been opened. Fallback returned instead.");
+        return false;
+    }
 }

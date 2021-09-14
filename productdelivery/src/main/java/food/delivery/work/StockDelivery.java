@@ -30,6 +30,9 @@ public class StockDelivery {
     private String deliveryStatus;
     private Date deliveryDate;
     private String userId;
+    
+    private static final String DELIVERY_STARTED = "delivery Started";
+    private static final String DELIVERY_CANCELED = "delivery Canceled";
   
     @PostPersist
     public void onPostPersist() throws Exception{
@@ -41,31 +44,50 @@ public class StockDelivery {
         promote.setOrderId(this.orderId); 
         promote.setOrderStatus(this.orderStatus); 
         promote.setProductId(this.productId); 
-    	
-        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon(promote);
-
-        if(result){
-        	System.out.println("----------------");
-            System.out.println("Coupon Published");
-            System.out.println("----------------");
-	       	DeliveryStarted deliveryStarted = new DeliveryStarted();
-	        BeanUtils.copyProperties(this, deliveryStarted);
-	        deliveryStarted.publishAfterCommit();
-        }else {
-        	throw new RollbackException("Failed during coupon publish");
+        
+        // deliveryStatus 따라 로직 분기
+        if(DELIVERY_STARTED.equals(this.deliveryStatus)){
+        
+	        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon(promote);
+	
+	        if(result){
+	        	System.out.println("----------------");
+	            System.out.println("Coupon Published");
+	            System.out.println("----------------");
+		       	DeliveryStarted deliveryStarted = new DeliveryStarted();
+		        BeanUtils.copyProperties(this, deliveryStarted);
+		        deliveryStarted.publishAfterCommit();
+	        }else {
+	        	throw new RollbackException("Failed during coupon publish");
+	        }
+        
         }
-        
-        
+        else if(DELIVERY_CANCELED.equals(this.deliveryStatus)) {
+        	
+	        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).cancelCoupon(promote);
+	    	
+	        if(result){
+	        	System.out.println("----------------");
+	            System.out.println("Coupon Canceled");
+	            System.out.println("----------------");
+		       	DeliveryStarted deliveryStarted = new DeliveryStarted();
+		        BeanUtils.copyProperties(this, deliveryStarted);
+		        deliveryStarted.publishAfterCommit();
+	        }else {
+	        	throw new RollbackException("Failed during coupon cancel");
+	        }
+	        
+        }
 
     }
-
+/*
     @PreRemove
     public void onPreRemove(){
         DeliveryCancled deliveryCancled = new DeliveryCancled();
         BeanUtils.copyProperties(this, deliveryCancled);
         deliveryCancled.publishAfterCommit();
     }
-/*
+
     @PostUpdate
     public void onPostUpdate(){
        // DeliveryCompleted deliveryCompleted = new DeliveryCompleted();
@@ -78,7 +100,7 @@ public class StockDelivery {
            System.out.println("Coupon Published");
        }
     }
-*/ 
+ */
   
    
 

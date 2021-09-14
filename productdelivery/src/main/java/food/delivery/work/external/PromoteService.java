@@ -14,4 +14,7 @@ public interface PromoteService {
   
     @RequestMapping(method=RequestMethod.POST, path="/createPromoteInfo")
     public boolean publishCoupon(@RequestBody Promote promote);
+    
+    @RequestMapping(method=RequestMethod.POST, path="/cancelCoupon")
+    public boolean cancelCoupon(@RequestBody Promote promote);
 }
