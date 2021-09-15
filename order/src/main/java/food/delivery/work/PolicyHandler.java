@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PolicyHandler{
     @Autowired OrderRepository orderRepository;
-
+    /*
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverDeliveryStarted_UpdateOrderStatus(@Payload DeliveryStarted deliveryStarted){
 
@@ -81,4 +81,5 @@ public class PolicyHandler{
     	orderRepository.save(order);
 
     }
+    */
 }
