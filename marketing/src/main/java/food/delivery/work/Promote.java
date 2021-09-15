@@ -25,6 +25,7 @@ public class Promote {
 
     @PostPersist
     public void onPostPersist(){
+    	/*
     	if(this.couponId == "" || this.couponId == null) {
 	        CouponPublished couponPublished = new CouponPublished();
 	        BeanUtils.copyProperties(this, couponPublished);
@@ -35,7 +36,19 @@ public class Promote {
 	        BeanUtils.copyProperties(this, couponPublished);
 	        couponPublished.publishAfterCommit();
     	}
-
+    	*/
+        CouponPublished couponPublished = new CouponPublished();
+        BeanUtils.copyProperties(this, couponPublished);
+        couponPublished.publishAfterCommit();
+        System.out.println("\n\n promote onPostPersist() \n\n");
+    }
+    
+    @PostUpdate
+    public void onPostUpdate(){
+        CouponCanceled couponCanceled = new CouponCanceled();
+        BeanUtils.copyProperties(this, couponCanceled);
+        couponCanceled.publishAfterCommit();
+        System.out.println("\n\n promote onPostUpdate() \n\n");
     }
 
 	public Long getId() {
