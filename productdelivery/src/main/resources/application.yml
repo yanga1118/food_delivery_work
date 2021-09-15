@@ -5,6 +5,7 @@ server:
   
 spring:
   profiles: default
+ 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://cloud12st.ck7n6wloicx4.ap-northeast-2.rds.amazonaws.com:3306/cloud12st
@@ -12,11 +13,11 @@ spring:
     password: cloud#1234
   
   jpa:
-    database-platform: org.hibernate.dialect.MYSQL5InnoDBDialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: create
 
   cloud:
     stream:
@@ -45,14 +46,26 @@ logging:
     org.hibernate.type: trace
     org.springframework.cloud: debug
 
-
-
 server:
   port: 8081
 ---
 
 spring:
   profiles: docker
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cloud12st.ck7n6wloicx4.ap-northeast-2.rds.amazonaws.com:3306/cloud12st
+    username: root
+    password: cloud#1234
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: create
+          
   cloud:
     stream:
       kafka:
