@@ -28,6 +28,9 @@ phases:
       - echo Building the Docker image...
       - cd order
       - mvn package -Dmaven.test.skip=true
+      - echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      - echo $pwd
+      - echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
   post_build:
     commands:
