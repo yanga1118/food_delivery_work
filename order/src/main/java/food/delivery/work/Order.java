@@ -4,11 +4,14 @@ import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
 import java.util.List;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name="Order_table")
 public class Order {
 
+    
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -30,6 +33,8 @@ public class Order {
     @PostPersist
     public void onPostPersist(){
     	
+         Logger logger = LoggerFactory.getLogger(this.getClass());
+
     	
         OrderPlaced orderPlaced = new OrderPlaced();
         BeanUtils.copyProperties(this, orderPlaced);
@@ -37,14 +42,12 @@ public class Order {
         System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
         System.out.println("\n\n##### orderplace : "+orderPlaced.toJson() + "\n\n");
         System.out.println("\n\n##### productid : "+this.productId + "\n\n");
-        
-        
+        logger.debug("OrderService");
     }
 
     @PostUpdate
     public void onPostUpdate() {
     	
-    	System.out.println("\n\n##### #$!%#$%@#$%@#$%@#$%@#$%@#$% test !@#$!@#$!@#$!@#$!@#$@!#$\n\n");
     	OrderCanceled orderCanceled = new OrderCanceled();
         BeanUtils.copyProperties(this, orderCanceled);
         orderCanceled.publishAfterCommit();

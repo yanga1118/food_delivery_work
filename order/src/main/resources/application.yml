@@ -37,9 +37,13 @@ spring:
           contentType: application/json
 
 logging:
+  path: /logs/order
+  file:
+    max-history: 30
   level:
-    org.hibernate.type: trace
     org.springframework.cloud: debug
+
+
 server:
   port: 8082
 ---
@@ -71,3 +75,10 @@ spring:
         event-out:
           destination: eventTopic
           contentType: application/json
+
+logging:
+  path: /logs/order
+  file:
+    max-history: 30
+  level:
+    org.springframework.cloud: debug
