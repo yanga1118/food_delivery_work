@@ -8,7 +8,7 @@ spring:
  
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://cloud12st.ck7n6wloicx4.ap-northeast-2.rds.amazonaws.com:3306/cloud12st
+    url: jdbc:mysql://cloud12st.cqcjeh663ucm.ap-southeast-1.rds.amazonaws.com:3306/cloud12st
     username: root
     password: cloud#1234
   
