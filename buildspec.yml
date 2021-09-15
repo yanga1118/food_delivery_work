@@ -28,11 +28,13 @@ phases:
       - echo Building the Docker image...
       - cd order
       - mvn package -Dmaven.test.skip=true
+      - cd order
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
+      - cd order
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
 
 cache:
