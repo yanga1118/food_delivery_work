@@ -9,7 +9,7 @@ import food.delivery.work.Promote;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="marketing", url = "http://localhost:8083", fallback = PromoteServiceFallback.class)
+@FeignClient(name="marketing", url = "${api.promote.url}", fallback = PromoteServiceFallback.class)
 public interface PromoteService {
   
     @RequestMapping(method=RequestMethod.POST, path="/createPromoteInfo")
