@@ -2,6 +2,8 @@ version: 0.2
 
 env:
   variables:
+    AWS_ACCOUNT_ID: "879772956301"
+    AWS_DEFAULT_REGION: "ap-southeast-1"
     IMAGE_REPO_NAME: "order"
     CODEBUILD_RESOLVED_SOURCE_VERSION: "latest"
 
@@ -14,7 +16,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - echo $IMAGE_REPO_NAME
-      - echo $AWS_ACCOUNT_ID
+      - echo $AWS_ACCOUNT_IDecho $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - 
       - echo $AWS_DEFAULT_REGION
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo start command
