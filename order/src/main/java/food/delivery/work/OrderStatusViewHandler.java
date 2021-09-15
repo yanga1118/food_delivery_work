@@ -92,7 +92,7 @@ public class OrderStatusViewHandler {
             List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponPublished.getOrderId());
             
             for(OrderStatus orderStatus: orderStatusList) {
-            	orderStatus.setOrderStatus("DeliveryCanceled");
+            	orderStatus.setOrderStatus("DeliveryStarted and CouponPublished");
             	orderStatus.setCouponId(couponPublished.getCouponId());
             	orderStatus.setCouponKind(couponPublished.getCouponKind());
             	orderStatus.setCouponUseYn(couponPublished.getCouponUseYn());
@@ -107,18 +107,18 @@ public class OrderStatusViewHandler {
     }
     
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenCouponCanceled_then_UPDATE_1 (@Payload CouponPublished couponPublished) {
+    public void whenCouponCanceled_then_UPDATE_1 (@Payload CouponCanceled couponCanceled) {
         try {
 
-            if (!couponPublished.validate()) return;
+            if (!couponCanceled.validate()) return;
 
-            List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponPublished.getOrderId());
+            List<OrderStatus> orderStatusList = orderStatusRepository.findByOrderId(couponCanceled.getOrderId());
             
             for(OrderStatus orderStatus: orderStatusList) {
-            	orderStatus.setOrderStatus("DeliveryCanceled");
-            	orderStatus.setCouponId(couponPublished.getCouponId());
-            	orderStatus.setCouponKind(couponPublished.getCouponKind());
-            	orderStatus.setCouponUseYn(couponPublished.getCouponUseYn());
+            	orderStatus.setOrderStatus("DeliveryCanceled and CouponCanceled");
+            	orderStatus.setCouponId(couponCanceled.getCouponId());
+            	orderStatus.setCouponKind(couponCanceled.getCouponKind());
+            	orderStatus.setCouponUseYn(couponCanceled.getCouponUseYn());
             	orderStatusRepository.save(orderStatus);
             	
             	System.out.println("\n\n##### OrderStatus : whenCouponCanceled_then_UPDATE_1" + "\n\n");

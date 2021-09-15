@@ -23,7 +23,7 @@ public class PolicyHandler{
          StockDelivery delivery = new StockDelivery();
 
          delivery.setOrderId(orderPlaced.getId());
-         delivery.setCustomerId(orderPlaced.getUserId());
+         delivery.setUserId(orderPlaced.getUserId());
          delivery.setOrderDate(orderPlaced.getOrderDate());
          delivery.setPhoneNo(orderPlaced.getPhoneNo());
          delivery.setProductId(orderPlaced.getProductId());
