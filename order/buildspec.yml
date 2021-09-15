@@ -3,12 +3,13 @@ version: 0.2
 env:
   variables:
     IMAGE_REPO_NAME: "order"
+    CODEBUILD_RESOLVED_SOURCE_VERSION: "latest"
 
 phases:
   install:
     runtime-versions:
-      java: corretto8
-      docker: 18
+      java: corretto11
+      docker: 17
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
