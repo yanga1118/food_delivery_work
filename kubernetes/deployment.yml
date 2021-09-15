@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: productdelivery
-          image: username/productdelivery:latest
+          image: 879772956301.dkr.ecr.ap-southeast-1.amazonaws.com/productdelivery:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: username/order:latest
+          image: 879772956301.dkr.ecr.ap-southeast-1.amazonaws.com/order:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
         - name: marketing
-          image: username/marketing:latest
+          image: 879772956301.dkr.ecr.ap-southeast-1.amazonaws.com/marketing:latest
           ports:
             - containerPort: 8080
           readinessProbe:
