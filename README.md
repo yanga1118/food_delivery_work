@@ -929,50 +929,18 @@ siege 가용성은 100%을 유지하고 있다.
 
 # Self-healing (Liveness Probe) 작성완료
 
-deployment.yml 
+- port 및 정보를 잘못된 값으로 변경하여 yml 적용
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: productdelivery
-  labels:
-    app: productdelivery
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: productdelivery
-  template:
-    metadata:
-      labels:
-        app: productdelivery
-    spec:
-      containers:
-        - name: productdelivery
-          image: 879772956301.dkr.ecr.ap-southeast-1.amazonaws.com/productdelivery:latest
-          ports:
-            - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: '/actuator/health'
-              port: 8080
-            initialDelaySeconds: 10
-            timeoutSeconds: 2
-            periodSeconds: 5
-            failureThreshold: 10
-          livenessProbe:
-            httpGet:
-              path: '/actuator/health'
-              port: 8080
-            initialDelaySeconds: 120
-            timeoutSeconds: 2
-            periodSeconds: 5
-            failureThreshold: 5
-```
-주문배송(Productdelivery) 서비스의 배포 yaml 파일에 Pod 내 /actuator/health 파일을 5초마다 체크하도록 livenessProbe 옵션을 추가하였다
+![liveness1](https://user-images.githubusercontent.com/88864433/133550800-5c481182-5e46-4572-b5c8-738fe5356653.PNG)
 
-![liveness](https://user-images.githubusercontent.com/88864433/133543120-baca4cf7-fe8e-4b13-afb3-9f101d5b6060.PNG)
+- 해당 yml을 배포
+
+![liveness2](https://user-images.githubusercontent.com/88864433/133550866-21e9ca23-9d2c-41a0-bc60-0f6a7596279f.PNG)
+
+- 잘못된 파일이어서 kubelet이 자동으로 컨테이너를 재시작하였다. 
+
+![liveness3](https://user-images.githubusercontent.com/88864433/133550970-0f13cf46-7b96-4034-aeaa-c24750597973.PNG)
+
 
 
 # 운영유연성
