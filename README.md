@@ -789,12 +789,11 @@ spring:
 
 - 각 마이크로 서비스들이 각자의 저장소 구조를 자율적으로 채택하고 각자의 저장소 유형 (RDB, NoSQL, File System 등)을 선택하여 구현하였는가?
 
-#### 답변 
 H2 DB의 경우 휘발성 데이터의 단점이 있는데, productdelivery 서비스의 경우 타 서비스들의 비해 중요하다고 생각하였다.
 productdelivery는 주문과 쿠폰발행/취소를 중간에서 모두 파악하여 처리해야 되기 때문에 백업,복원기능과 안정성이 장점이 있는 mysql을 선택하여 구현하였다.
 
 
-# API 게이트웨이 (작성중)
+# API 게이트웨이
 - API GW를 통하여 마이크로 서비스들의 진입점을 통일할 수 있는가?
 
 - application.yml
@@ -834,12 +833,12 @@ spring:
 server:
   port: 8080
 ```
-#### 답변
+
 Gateway의 application.yml이며, 마이크로서비스들의 진입점을 세팅하여 URI Path에 따라서 각 마이크로서비스로 라우팅되도록 설정되었다.
 
 # 운영
 --
-# Deploy/Pipeline (작성완료)
+# Deploy/Pipeline
 
 - (CI/CD 설정) BuildSpec.yml 사용 각 MSA 구현물은 git의 source repository 에 구성되었고, AWS의 CodeBuild를 활용하여 무정지 CI/CD를 설정하였다.
 
@@ -929,7 +928,7 @@ siege -c50 -t30S -r10 -v --content-type "application/json" 'http://localhost:808
 
 Hystrix 를 설정: 요청처리 쓰레드에서 처리시간이 610 ms가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 
-# Autoscale(HPA) 작성완료
+# Autoscale(HPA)
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
 
 ![hpa1](https://user-images.githubusercontent.com/88864433/133547537-2a3d5954-305b-443e-9f06-ecd0913fdc1a.PNG)
@@ -971,7 +970,7 @@ siege 가용성은 100%을 유지하고 있다.
 서비스의 끊김없이 무정지 배포가 실행됨을 확인하였다. 
 
 
-# Self-healing (Liveness Probe) 작성완료
+# Self-healing (Liveness Probe)
 
 - port 및 정보를 잘못된 값으로 변경하여 yml 적용
 
