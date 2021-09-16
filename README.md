@@ -866,8 +866,27 @@ cache:
 ```
 
 # 동기식 호출 / Circuit Breaker / 장애격리
-서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함
 오더 요청이 과도할 경우 서킷 브레이크를 통해 장애 격리를 하려고 한다.
+
+- 부하테스터 siege툴을 통한 Circuit Breaker 동작 확인 : 
+- 동시사용자 50명
+- 30초간 실시
+- marketing 서비스의 req/res 호출 후 저장전 sleep 을 진행한다.
+
+```
+siege -c50 -t30S -r10 -v --content-type "application/json" 'http://localhost:8081/stockDeliveries POST {"orderId": 1, "orderStatus": "test", "userName": "test", "qty": 10, "deliveryStatus": "delivery Started"}'
+```
+
+
+![ciruit1](https://user-images.githubusercontent.com/88864433/133549822-19fa0ac7-6876-4b76-b2fb-9d64e0feace3.PNG)
+
+![circuit2](https://user-images.githubusercontent.com/88864433/133549882-3b653f1e-6c84-4abb-b073-b5cca21ddda2.PNG)
+
+![circuit3](https://user-images.githubusercontent.com/88864433/133549892-99e332ac-18fe-4b4e-9737-b4341b66985f.PNG)
+
+![circuit4](https://user-images.githubusercontent.com/88864433/133550076-1789913a-d545-4c18-9fc3-3afe0e03c8e2.PNG)
+
+![circuit5](https://user-images.githubusercontent.com/88864433/133550122-22b8de48-faeb-4079-8bcf-9d6b48f5a457.PNG)
 
 Hystrix 를 설정: 요청처리 쓰레드에서 처리시간이 610 ms가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 
