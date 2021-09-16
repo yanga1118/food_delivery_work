@@ -796,7 +796,7 @@ server:
   port: 8080
 ```
 #### 답변
-아래는 MSAEZ를 통해 자동 생성된 gateway 서비스의 application.yml이며, 마이크로서비스들의 진입점을 통일하여 URL Path에 따라서 마이크로서비스별 서로 다른 포트로 라우팅시키도록 설정되었다.
+Gateway의 application.yml이며, 마이크로서비스들의 진입점을 세팅하여 URL Path에 따라서 마이크로서비스별 서로 다른 포트로 라우팅시키도록 설정되었다.
 
 # 운영
 --
