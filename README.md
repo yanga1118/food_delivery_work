@@ -133,10 +133,15 @@
 - MSAEz로 모델링한 이벤트스토밍 결과
 https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa837bc508a68029
 
+
 ### 이벤트 도출
 
 ![1](https://user-images.githubusercontent.com/88864433/133356420-db8f0cf8-a3f6-4d24-8242-e9e739401045.PNG)
- 
+
+```
+1차적으로 필요하다고 생각되는 이벤트를 도출하였다 
+``` 
+
 ### 부적격 이벤트 탈락
 
 ![2](https://user-images.githubusercontent.com/88864433/133356470-ee9c68e5-50c7-45b8-8bf2-15b9ee408036.PNG)
@@ -159,7 +164,7 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 ![5](https://user-images.githubusercontent.com/88864433/133261206-85a09dd0-b646-4e4a-b499-8009f92570a1.PNG)
  
 ``` 
-- 고객의 주문, 점주의 배송관리, 마케팅의 쿠폰관리는 command와 event 들에 의하여 트랜잭션이 유지되어야 하는 단위로 묶어줌
+- 고객의 주문후 배송팀의 배송관리, 마케팅의 쿠폰관리는 command와 event 들에 의하여 트랜잭션이 유지되어야 하는 단위로 묶어줌
 ```
 
 ### 바운디드 컨텍스트로 묶기
@@ -230,8 +235,8 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 ```
 
 # 구현
---
-분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 바운더리 컨텍스트 별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
+
+- 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 바운더리 컨텍스트 별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
 
 ```
 cd order
@@ -318,7 +323,13 @@ public class Order {
 
 Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 하였고 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
 
-#### [주석] java 소스 구현한 방법에 대한 간략한 설명 필요
+```
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+public interface OrderRepository extends PagingAndSortingRepository<Order, Long>{
+	
+}
+```
 
 promote.java 
 
@@ -364,6 +375,16 @@ public class Promote {
 
 ```
 
+```
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+public interface PromoteRepository extends PagingAndSortingRepository<Promote, Long>{
+
+	List<Promote> findByOrderId(Long orderId);
+
+}
+```
+
 - 분석단계에서의 유비쿼터스 랭귀지 (업무현장에서 쓰는 용어) 를 사용하여 소스코드가 서술되었는가?
 가능한 현업에서 사용하는 언어를 모델링 및 구현시 그대로 사용하려고 노력하였다. 
 
@@ -371,8 +392,16 @@ public class Promote {
 주문 결제 후 productdelivery 주문 접수하기 POST
 
 ```
-#### (명령어수정필요)
-http localhost:8082/ordermgmts orderId=1 itemId=1 itemName="ITbook" qty=1 customerName="HanYongSun" deliveryAddress="kyungkido sungnamsi" deliveryPhoneNumber="01012341234" orderStatus="order"
+#### (명령어수정필요) 아래는 예시
+# wellbing 서비스의 체크인 처리
+http http://localhost:8081/eats number=3000
+
+# wellbing 서비스의 체크아웃 후 point 서비스의 적립 처리
+http PUT http://localhost:8081/eats/1 number=3000
+
+# 적립 상태 확인
+http http://localhost:8082/earns/1
+
 #### POST 캡쳐화면 
 
 ```
@@ -488,28 +517,104 @@ public class PromoteServiceFallback implements PromoteService {
 ```
 
 
-# 비동기식 호출과 Eventual Consistency 
--- 주문취소 후에 배송이 취소되는 과정이 비동기식일까?? 
+# 비동기식 호출과 Eventual Consistency (작성완료)
 
 (이벤트 드리븐 아키텍처)
 
 - 카프카를 이용하여 PubSub 으로 하나 이상의 서비스가 연동되었는가?
 - Correlation-key: 각 이벤트 건 (메시지)가 어떠한 폴리시를 처리할때 어떤 건에 연결된 처리건인지를 구별하기 위한 Correlation-key 연결을 제대로 구현 하였는가?
 
+#### 답변 (검토필요) 
+
+주문/주문취소 후에 이를 배송팀에 알려주는 트랜잭션은 Pub/Sub 관계로 구현하였다.
+아래는 주문/주문취소 이벤트를 통해 kafka를 통해 배송팀 서비스에 연계받는 코드 내용이다. 
+
+```
+
+    @PostPersist
+    public void onPostPersist(){
+    	
+         Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    	
+        OrderPlaced orderPlaced = new OrderPlaced();
+        BeanUtils.copyProperties(this, orderPlaced);
+        orderPlaced.publishAfterCommit();
+        System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
+        System.out.println("\n\n##### orderplace : "+orderPlaced.toJson() + "\n\n");
+        System.out.println("\n\n##### productid : "+this.productId + "\n\n");
+        logger.debug("OrderService");
+    }
+
+    @PostUpdate
+    public void onPostUpdate() {
+    	
+    	OrderCanceled orderCanceled = new OrderCanceled();
+        BeanUtils.copyProperties(this, orderCanceled);
+        orderCanceled.publishAfterCommit();
+    }
+```
+- 배송팀에서는 주문/주문취소 접수 이벤트에 대해 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler를 구현한다. 
+
+```
+@Service
+public class PolicyHandler{
+    @Autowired StockDeliveryRepository stockDeliveryRepository;
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderPlaced_AcceptOrder(@Payload OrderPlaced orderPlaced){
+
+        if(!orderPlaced.validate()) return;
+...중략 
+
+         stockDeliveryRepository.save(delivery);
+
+    }
+    private Integer parseInt(String qty) {
+        return null;
+    }
+    /*
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled){
+        if(!orderCanceled.validate()) return;
+        Long orderId =Long.valueOf(orderCanceled.getId());
+        stockDeliveryRepository.deleteById(orderId); 
+        
+        stockDeliveryRepository.s
+    }
+    */
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled) {
+    	
+    	if(!orderCanceled.validate()) return;
+... 중략
+        for (StockDelivery delivery:deliveryList)
+        {
+        	System.out.println("\n\n"+orderCanceled.getId());
+            delivery.setDeliveryStatus("delivery Canceled");
+            stockDeliveryRepository.save(delivery);
+        }
+     
+    }
+
+}
+```
 
 
-#### 답변
-...작성필요 
-예시) 
-카프카를 이용하여 주문완료 시 결제 처리를 제외한 나머지 모든 마이크로서비스 트랜잭션은 Pub/Sub 관계로 구현하였다.
-아래는 주문취소 이벤트(OrderCanceled)를 카프카를 통해 주문관리(ordermanagement) 서비스에 연계받는 코드 내용이다.
 
 
-# SAGA 패턴 
+
+
+
+
+
+# SAGA 패턴 (작성필요) 
 - 취소에 따른 보상 트랜잭션을 설계하였는가(Saga Pattern)
 
 #### 답변 : 
 상품배송팀의 기능을 수행할 수 없더라도 주문은 항상 받을 수 있게끔 설계하였다. 
+
 
 ### SAGA 패턴에 맞춘 트랜잭션 실행 (캡쳐화면) 
 
@@ -762,9 +867,12 @@ Hystrix 를 설정: 요청처리 쓰레드에서 처리시간이 610 ms가 넘�
 -- 
 
 # Zero-downtime deploy (Readiness Probe) 
--- 
-(무정지 배포) 서비스의 무정지 배포를 위하여 주문관리(Ordermanagement) 서비스의 배포 yaml 파일에 readinessProbe 옵션을 추가하였다.
+(무정지 배포) 
+서비스의 무정지 배포를 위하여 오더(Order) 서비스의 배포 yaml 파일에 readinessProbe 옵션을 추가하였다.
 
+![readness1](https://user-images.githubusercontent.com/88864433/133539552-06cc7425-1cb5-4319-b92b-c7c20d807c69.PNG)
+
+![readness2](https://user-images.githubusercontent.com/88864433/133539593-37ea6cf1-ce76-4d5e-bf21-b6f3ec85079c.PNG)
 
 
 # Self-healing (Liveness Probe) 
