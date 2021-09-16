@@ -232,7 +232,7 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 
 ### 헥사고날 아키텍처 다이어그램 도출 (그림 수정필요없는지 확인 필요)
 
-![분산이벤트스트림](https://user-images.githubusercontent.com/88864433/133448231-162975ce-3bf4-412a-8de6-e419df515834.PNG)
+![분산스트림2](https://user-images.githubusercontent.com/88864433/133557657-451e67e9-400a-477c-af09-2bfd56f9a659.PNG)
  
 
 ```
