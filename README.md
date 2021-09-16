@@ -670,7 +670,7 @@ Order aggegate의 값들을 추가한 이후 주문완료됨(OrderPlaced) 이벤
 
 
 
-# CQRS (작성완료. 검토필요) 
+# CQRS
 - CQRS: Materialized View 를 구현하여, 타 마이크로서비스의 데이터 원본에 접근없이(Composite 서비스나 조인SQL 등 없이) 도 내 서비스의 화면 구성과 잦은 조회가 가능한가?
 
 주문/배송상태가 바뀔 때마다 고객이 현재 상태를 확인할 수 있어야 한다는 요구사항에 따라 주문 서비스 내에 OrderStatus View를 모델링하였다
@@ -745,15 +745,13 @@ public class OrderStatusViewHandler {
 
 
 - CQRS 테스트 
-``` 
-캡쳐화면 등록 
-````
 
-- Message Consumer 마이크로서비스가 장애상황에서 수신받지 못했던 기존 이벤트들을 다시 수신받아 처리하는가?
-#### 답변 
-ordermanagement 서비스만 구동되고 delivery 서비스는 멈춰있는 상태이다. 주문관리에 이벤트가 발생하면 카프카 큐에 정상적으로 들어감을 확인할 수 있다.
+![CQRS](https://user-images.githubusercontent.com/88864433/133558737-0d82429e-add2-403b-9750-c1a723beeb86.PNG)
 
-# 폴리글랏 퍼시스턴스 (작성완료. 검토필요) 
+
+
+
+# 폴리글랏 퍼시스턴스
 - pom.xml
 ```
 		<dependency>
