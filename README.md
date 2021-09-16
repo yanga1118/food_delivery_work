@@ -331,7 +331,42 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 }
 ```
 
-promote.java 
+배송팀의 StockDelivery.java
+
+```
+@Entity
+@Table(name="StockDelivery_table")
+public class StockDelivery {
+
+     //Distance 삭제 및 Id auto로 변경
+    
+    private Long orderId;
+    private String orderStatus;
+    private String userName;
+    private String address;
+    private String productId;
+    private Integer qty;
+    private String storeName;
+    private Date orderDate;
+    private Date confirmDate;
+    private String productName;
+    private String phoneNo;
+    private Long productPrice;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private String customerId;
+    private String deliveryStatus;
+    private Date deliveryDate;
+    private String userId;
+    
+    private static final String DELIVERY_STARTED = "delivery Started";
+    private static final String DELIVERY_CANCELED = "delivery Canceled";
+... 생략 
+
+```
+
+마케팅의 promote.java 
 
 ``` 
 @Entity
