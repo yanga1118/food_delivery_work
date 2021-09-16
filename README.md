@@ -459,16 +459,7 @@ http GET http://aedb7e1cae2d84953b471cb6b57ed58f-1249713815.ap-southeast-1.elb.a
 ```
 
 
-#### 작성필요
-order 주문 취소하기 PATCH
-```
-http PATCH localhost:8088/orders/5 orderStatus="orderCanceled"
-```
-
-#### 주문취소하기 캡쳐화면
-
-
-# 동기식 호출과 Fallback 처리 (작성완료)
+# 동기식 호출과 Fallback 처리
 
 (Request-Response 방식의 서비스 중심 아키텍처 구현)
 
