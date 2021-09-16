@@ -610,10 +610,32 @@ public class PolicyHandler{
 
 
 # SAGA 패턴 (작성필요) 
-- 취소에 따른 보상 트랜잭션을 설계하였는가(Saga Pattern)
+- 취소에 따른 보상 트랜잭션을 설계하였는가?(Saga Pattern)
 
-#### 답변 : 
 상품배송팀의 기능을 수행할 수 없더라도 주문은 항상 받을 수 있게끔 설계하였다. 
+다만 데이터의 원자성을 보장해주지 않기 때문에 추후 order service 에서 재고 정보를 확인한 이후에 주문수락을 진행하거나, 상품배송 서비스에서 데이터 변경전 재고 여부를 확인하여 롤백 이벤트를 보내는 로직이 필요할 것으로 판단된다. 
+
+
+order 서비스가  고객으로 주문 및 결제(order and pay) 요청을 받고
+[order 서비스]
+Order aggegate의 값들을 추가한 이후 주문완료됨(OrderPlaced) 이벤트를 발행한다. - 첫번째 
+
+![saga1](https://user-images.githubusercontent.com/88864433/133546289-8b2cf493-7296-4464-944a-1c112f77b500.PNG)
+
+서비스의 트랜젝션 완료
+
+[product delivery 서비스]
+
+![saga2](https://user-images.githubusercontent.com/88864433/133546388-3d5da7c0-8609-4a5b-8143-270b761a7a54.PNG)
+
+주문완료됨(OrderPlaced) 이벤트가 발행되면 상품배송 서비스에서 해당 이벤트를 확인한다.
+재고배송(stockdelivery) 정보를 추가 한다. - 두번째 서비스의 트렌젝션 완료
+
+![saga3](https://user-images.githubusercontent.com/88864433/133546519-f224c831-4a34-4360-bd79-23a5f077949e.PNG)
+
+
+
+
 
 
 ### SAGA 패턴에 맞춘 트랜잭션 실행 (캡쳐화면) 
