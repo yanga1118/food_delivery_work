@@ -937,7 +937,7 @@ siege 가용성은 100%을 유지하고 있다.
 
 ![liveness2](https://user-images.githubusercontent.com/88864433/133550866-21e9ca23-9d2c-41a0-bc60-0f6a7596279f.PNG)
 
-- 잘못된 파일이어서 kubelet이 자동으로 컨테이너를 재시작하였다. 
+- 잘못된 경로와 포트여서 kubelet이 자동으로 컨테이너를 재시작하였다. 
 
 ![liveness3](https://user-images.githubusercontent.com/88864433/133550970-0f13cf46-7b96-4034-aeaa-c24750597973.PNG)
 
