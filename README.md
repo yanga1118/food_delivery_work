@@ -603,13 +603,7 @@ public class PolicyHandler{
 
 
 
-
-
-
-
-
-
-# SAGA 패턴 (작성필요) 
+# SAGA 패턴 (작성완료) 
 - 취소에 따른 보상 트랜잭션을 설계하였는가?(Saga Pattern)
 
 상품배송팀의 기능을 수행할 수 없더라도 주문은 항상 받을 수 있게끔 설계하였다. 
@@ -632,14 +626,6 @@ Order aggegate의 값들을 추가한 이후 주문완료됨(OrderPlaced) 이벤
 재고배송(stockdelivery) 정보를 추가 한다. - 두번째 서비스의 트렌젝션 완료
 
 ![saga3](https://user-images.githubusercontent.com/88864433/133546519-f224c831-4a34-4360-bd79-23a5f077949e.PNG)
-
-
-
-
-
-
-### SAGA 패턴에 맞춘 트랜잭션 실행 (캡쳐화면) 
-
 
 
 
