@@ -1,4 +1,6 @@
 # 조별과제 - 12번가
+
+![12번가](https://user-images.githubusercontent.com/88864433/133467597-709524b1-4613-4dab-bc57-948f433ad565.png)
 ---------------------------------
 
 # Table of contents
@@ -18,9 +20,8 @@
     - [동기식 호출 / Circuit Breaker / 장애격리](#동기식-호출-circuit-breaker-장애격리)
     - [Autoscale (HPA)](#autoscale-(hpa))
     - [Zero-downtime deploy (Readiness Probe)](#zerodowntime-deploy-(readiness-Probe))
-    - [ConfigMap](#configmap)
     - [Self-healing (Liveness Probe)](#self-healing-(liveness-probe))
-
+    - [운영유연성](#운영유연성)
 
 
 
@@ -33,23 +34,35 @@
 
 가. 기능적 요구사항
 
-1.[주문팀]고객이 상품을 선택하여 주문 및 결제 한다.
-2.[주문팀]주문이 되면 주문 내역이 상품배송팀에게 전달된다. orderplaced
-3.[상품배송팀]상품팀은 재고를 확인해서 배송을 출발한다.
-4.[마케팅팀]배송이 시작되면 쿠폰을 발행한다. ( 4.Req/Resp )
-5.[주문팀]고객이 주문을 취소한다.
-6.[상품배송팀] 주문이 취소되면 배달이 취소된다.
+ 1. [주문팀]고객이 상품을 선택하여 주문 및 결제 한다.
+
+ 2. [주문팀]주문이 되면 주문 내역이 상품배송팀에게 전달된다. orderplaced
+
+ 3. [상품배송팀]상품팀은 재고를 확인해서 배송을 출발한다.
+
+ 4. [마케팅팀]배송이 시작되면 쿠폰을 발행한다. ( 4.Req/Resp )
+
+ 5. [주문팀]고객이 주문을 취소한다.
+
+ 6. [상품배송팀] 주문이 취소되면 배달이 취소된다.
 
 
 나. 비기능적 요구사항
-1. [설계/구현]Req/Resp : 배송이 완료된건에 대해서만 쿠폰을 발행한다. 
+
+1. [설계/구현]Req/Resp : 쿠폰이 발행된 건에 한하여 배송을 시작한다. 
+
 2. [설계/구현]CQRS : 고객이 주문상태를 확인 가능해야한다.
+
 3. [설계/구현]Correlation : 주문을 취소하면 배달을 취소->재고 증가 -> 주문 상태 변경
+
 4. [설계/구현]saga : 상품배송팀 기능이 수행되지 않아도 주문은 항상 받을 수 있어야 한다.
+
 5. [설계/구현/운영]circuit breaker : 주문결재건수가 많으면(3건) 주문 및 결재를 받지 않고 잠시 후에 하도록 안내한다.
 
 다. 기타 
-1. [설계/구현/운영]polyglot : 주문팀과 상품배송팀은 이기종 데이터베이스 활용
+
+1. [설계/구현/운영]polyglot : 주문팀과 상품배송팀은 mysql 데이터베이스 활용
+
 
 
 # 체크포인트
@@ -193,21 +206,27 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 - 쿠폰발행이 취소되면 배송팀에서 배송을 취소한다 (ok)
 ```
 
-### 비기능 요구사항에 대한 검증 
+### 비기능 요구사항에 대한 검증 (5개가 맞는지 검토 필요)
 
-- 캡쳐화면 필요
+![비기능적 요구사항](https://user-images.githubusercontent.com/88864433/133370337-84871067-789e-48d1-89e4-486fd6d3e00e.PNG)
 
 ```
-텍스트 작성 
+1. [설계/구현]Req/Resp : 쿠폰이 발행된 건에 한하여 배송을 시작한다. 
+2. [설계/구현]CQRS : 고객이 주문상태를 확인 가능해야한다.
+3. [설계/구현]Correlation : 주문을 취소하면 배달을 취소->재고 증가 -> 주문 상태 변경
+4. [설계/구현]saga : 상품배송팀 기능이 수행되지 않아도 주문은 항상 받을 수 있어야 한다.
+5. [설계/구현/운영]circuit breaker : 주문결재건수가 많으면(3건) 주문 및 결재를 받지 않고 잠시 후에 하도록 안내한다.
 ``` 
 
-### 헥사고날 아키텍처 다이어그램 도출 
+### 헥사고날 아키텍처 다이어그램 도출 (그림 수정필요없는지 확인 필요)
 
-- 캡쳐화면 필요
-- 다이어그램 수정 필요함 
+![분산이벤트스트림](https://user-images.githubusercontent.com/88864433/133448231-162975ce-3bf4-412a-8de6-e419df515834.PNG)
+ 
 
 ```
-텍스트
+- Chris Richardson, MSA Patterns 참고하여 Inbound adaptor와 Outbound adaptor를 구분함
+- 호출관계에서 PubSub 과 Req/Resp 를 구분함
+- 서브 도메인과 바운디드 컨텍스트의 분리:  각 팀의 KPI 별로 아래와 같이 관심 구현 스토리를 나눠가짐
 ```
 
 # 구현
@@ -225,34 +244,139 @@ cd marketing
 mvn spring-boot:run 
 ```
 
-# DDD의 적용
---
-	- Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 데이터 접근 어댑터를 개발하였는가? 
+# DDD의 적용 (작성완료) 
+- Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 데이터 접근 어댑터를 개발하였는가? 
+
 각 서비스 내에 도출된 핵심 Aggregate Root 객체를 Entity로 선언하였다. (주문(order), 배송(productdelivery), 마케팅(marketing)) 
 
 주문 Entity (Order.java) 
 ```
-Order.java 소스 일부 붙여넣기 
+@Entity
+@Table(name="Order_table")
+public class Order {
+
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private String username;
+    private String address;
+    private String phoneNo;
+    private String productId;
+    private int qty; //type change
+    private String payStatus;
+    private String userId;
+    private String orderStatus;
+    private Date orderDate;
+    private String productName;
+    private Long productPrice;
+    private String couponId;
+    private String couponKind;
+    private String couponUseYn;
+
+    @PostPersist
+    public void onPostPersist(){
+    	
+         Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    	
+        OrderPlaced orderPlaced = new OrderPlaced();
+        BeanUtils.copyProperties(this, orderPlaced);
+        orderPlaced.publishAfterCommit();
+        System.out.println("\n\n##### OrderService : onPostPersist()" + "\n\n");
+        System.out.println("\n\n##### orderplace : "+orderPlaced.toJson() + "\n\n");
+        System.out.println("\n\n##### productid : "+this.productId + "\n\n");
+        logger.debug("OrderService");
+    }
+
+    @PostUpdate
+    public void onPostUpdate() {
+    	
+    	OrderCanceled orderCanceled = new OrderCanceled();
+        BeanUtils.copyProperties(this, orderCanceled);
+        orderCanceled.publishAfterCommit();
+    }
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+....생략 
+
 ```
+
 Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 하였고 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
+
 #### [주석] java 소스 구현한 방법에 대한 간략한 설명 필요
 
-productdelivery.java 
+promote.java 
 
 ``` 
-productdelivery.java 소스 일부 붙여넣기 
+@Entity
+@Table(name="Promote_table")
+public class Promote {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private String phoneNo;
+    private String username;
+    private Long orderId;
+    private String orderStatus;
+    private String productId;
+    private String payStatus;
+    private String couponId;
+    private String couponKind;
+    private String couponUseYn;
+    private String userId;
+
+    @PostPersist
+    public void onPostPersist(){
+        CouponPublished couponPublished = new CouponPublished();
+        BeanUtils.copyProperties(this, couponPublished);
+        couponPublished.publishAfterCommit();
+
+    }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+.... 생략 
+
 ```
 
 - 분석단계에서의 유비쿼터스 랭귀지 (업무현장에서 쓰는 용어) 를 사용하여 소스코드가 서술되었는가?
-가능한 현업에서 사용하는 언어를 모델링 및 구현시 그대로 사용하려고 노력하였다.  
+가능한 현업에서 사용하는 언어를 모델링 및 구현시 그대로 사용하려고 노력하였다. 
+
 - 적용 후 Rest API의 테스트
-#### 주문 결제 후 ordermgmts 주문 접수하기 POST 
+주문 결제 후 productdelivery 주문 접수하기 POST
 
 ```
-#### http localhost:8082/ordermgmts orderId=1 itemId=1 itemName="ITbook" qty=1 customerName="HanYongSun" deliveryAddress="kyungkido sungnamsi" deliveryPhoneNumber="01012341234" orderStatus="order"
-```
+#### (명령어수정필요)
+http localhost:8082/ordermgmts orderId=1 itemId=1 itemName="ITbook" qty=1 customerName="HanYongSun" deliveryAddress="kyungkido sungnamsi" deliveryPhoneNumber="01012341234" orderStatus="order"
 #### POST 캡쳐화면 
 
+```
+#### 작성필요
 order 주문 취소하기 PATCH
 ```
 http PATCH localhost:8088/orders/5 orderStatus="orderCanceled"
@@ -260,34 +384,210 @@ http PATCH localhost:8088/orders/5 orderStatus="orderCanceled"
 
 #### 주문취소하기 캡쳐화면
 
-# 동기식 호출과 Fallback 처리
---
+
+# 동기식 호출과 Fallback 처리 (작성완료)
+
 (Request-Response 방식의 서비스 중심 아키텍처 구현)
 
-마이크로 서비스간 Request-Response 호출에 있어 대상 서비스를 어떠한 방식으로 찾아서 호출 하였는가? (Service Discovery, REST, FeignClient)
-#### 답변 
-요구사항대로 주문이 들어와야지만 결제 서비스를 호출할 수 있도록 주문 시 결제 처리를 동기식으로 호출하도록 한다.
+- 마이크로 서비스간 Request-Response 호출에 있어 대상 서비스를 어떠한 방식으로 찾아서 호출 하였는가? (Service Discovery, REST, FeignClient)
+
+요구사항대로 배송팀에서는 쿠폰이 발행된 것을 확인한 후에 배송을 시작한다.
+
+StockDelivery.java Entity Class에 @PostPersist로 쿠폰 발행 후에 배송을 시작하도록 처리하였다.
+
+```
+    @PostPersist
+    public void onPostPersist() throws Exception{
+
+    	Promote promote = new Promote();
+        promote.setPhoneNo(this.phoneNo); 
+        promote.setUserId(this.userId); 
+        promote.setUsername(this.userName); 
+        promote.setOrderId(this.orderId); 
+        promote.setOrderStatus(this.orderStatus); 
+        promote.setProductId(this.productId); 
+        System.out.println("\n\npostpersist() : "+this.deliveryStatus +"\n\n");
+        // deliveryStatus 따라 로직 분기
+        if(DELIVERY_STARTED == this.deliveryStatus){
+        	
+	        boolean result = (boolean) ProductdeliveryApplication.applicationContext.getBean(food.delivery.work.external.PromoteService.class).publishCoupon(promote);
+	
+	        if(result){
+	        	System.out.println("----------------");
+	            System.out.println("Coupon Published");
+	            System.out.println("----------------");
+		       	DeliveryStarted deliveryStarted = new DeliveryStarted();
+		        BeanUtils.copyProperties(this, deliveryStarted);
+		        deliveryStarted.publishAfterCommit();
+	        }else {
+	        	throw new RollbackException("Failed during coupon publish");
+	        }
+        
+        }
+  
+    }
+    
+```
+
+##### 동기식 호출은 PromoteService 클래스를 두어 FeignClient 를 이용하여 호출하도록 하였다.
+
+- PromoteService.java
+
+```
+  
+package food.delivery.work.external;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import food.delivery.work.Promote;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient(name="marketing", url = "${api.promote.url}", fallback = PromoteServiceFallback.class)
+public interface PromoteService {
+  
+    @RequestMapping(method=RequestMethod.POST, path="/createPromoteInfo")
+    public boolean publishCoupon(@RequestBody Promote promote);
+    
+    @RequestMapping(method=RequestMethod.POST, path="/cancelCoupon")
+    public boolean cancelCoupon(@RequestBody Promote promote);
+}
+```
+
+- PromoteServiceFallback.java
+
+```
+  
+package food.delivery.work.external;
+
+import org.springframework.stereotype.Component;
+
+import food.delivery.work.Promote;
+
+@Component
+public class PromoteServiceFallback implements PromoteService {
+    @Override
+    public boolean publishCoupon(Promote promote) {
+        //do nothing if you want to forgive it
+
+        System.out.println("Circuit breaker has been opened. Fallback returned instead.");
+        return false;
+    }
+    
+    @Override
+    public boolean cancelCoupon(Promote promote) {
+        //do nothing if you want to forgive it
+
+        System.out.println("Circuit breaker has been opened. Fallback returned instead.");
+        return false;
+    }
+}
+```
+
 
 # 비동기식 호출과 Eventual Consistency 
---
+-- 주문취소 후에 배송이 취소되는 과정이 비동기식일까?? 
+
 (이벤트 드리븐 아키텍처)
 
-카프카를 이용하여 PubSub 으로 하나 이상의 서비스가 연동되었는가?
-#### 답변 
-Correlation-key: 각 이벤트 건 (메시지)가 어떠한 폴리시를 처리할때 어떤 건에 연결된 처리건인지를 구별하기 위한 Correlation-key 연결을 제대로 구현 하였는가?
+- 카프카를 이용하여 PubSub 으로 하나 이상의 서비스가 연동되었는가?
+- Correlation-key: 각 이벤트 건 (메시지)가 어떠한 폴리시를 처리할때 어떤 건에 연결된 처리건인지를 구별하기 위한 Correlation-key 연결을 제대로 구현 하였는가?
+
+
+
+#### 답변
+...작성필요 
+예시) 
 카프카를 이용하여 주문완료 시 결제 처리를 제외한 나머지 모든 마이크로서비스 트랜잭션은 Pub/Sub 관계로 구현하였다.
 아래는 주문취소 이벤트(OrderCanceled)를 카프카를 통해 주문관리(ordermanagement) 서비스에 연계받는 코드 내용이다.
 
 
 # SAGA 패턴 
---
 - 취소에 따른 보상 트랜잭션을 설계하였는가(Saga Pattern)
-#### 답변 : SAGA 패턴은 각 서비스의 트랜잭션 완료 후에 다음 서비스가 트리거 되어 트랜잭션을 실행하는 방법으로현재 BookDelivery 시스템도 SAGA 패턴으로 설계되어 있다.
+
+#### 답변 : 
+상품배송팀의 기능을 수행할 수 없더라도 주문은 항상 받을 수 있게끔 설계하였다. 
+
+### SAGA 패턴에 맞춘 트랜잭션 실행 (캡쳐화면) 
 
 
-# CQRS 
---
+
+
+# CQRS (작성완료. 검토필요) 
 - CQRS: Materialized View 를 구현하여, 타 마이크로서비스의 데이터 원본에 접근없이(Composite 서비스나 조인SQL 등 없이) 도 내 서비스의 화면 구성과 잦은 조회가 가능한가?
+
+주문/배송상태가 바뀔 때마다 고객이 현재 상태를 확인할 수 있어야 한다는 요구사항에 따라 주문 서비스 내에 OrderStatus View를 모델링하였다
+
+OrderStatus.java 
+```
+@Entity
+@Table(name="OrderStatus_table")
+public class OrderStatus {
+
+        @Id
+        @GeneratedValue(strategy=GenerationType.AUTO)
+        private Long id;
+        private String username;
+        private String userId;
+        private Long orderId;
+        private String orderStatus;
+        private String productId;
+        private String productName;
+        private Long productPrice;
+        private int qty; 
+        private String couponId;
+        private String couponKind;
+        private String couponUseYn;
+.... 생략 
+```
+
+OrderStatusViewHandler 를 통해 구현
+
+Pub/Sub 기반으로 별도 ProductPage_table 테이블에 저장되도록 구현하였다.
+
+```
+@Service
+public class OrderStatusViewHandler {
+
+
+    @Autowired
+    private OrderStatusRepository orderStatusRepository;
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenOrderPlaced_then_CREATE_1 (@Payload OrderPlaced orderPlaced) {
+        try {
+
+            if (!orderPlaced.validate()) return;
+
+            // view 객체 생성
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setUsername(orderPlaced.getUsername());
+            orderStatus.setUserId(orderPlaced.getUserId());
+            orderStatus.setOrderId(orderPlaced.getId());
+            orderStatus.setOrderStatus("OrderPlaced");
+            orderStatus.setProductId(orderPlaced.getProductId());
+            orderStatus.setProductName(orderPlaced.getProductName());
+            orderStatus.setProductPrice(orderPlaced.getProductPrice());
+            orderStatus.setQty(orderPlaced.getQty());
+           
+            orderStatusRepository.save(orderStatus);
+            
+            System.out.println("\n\n##### OrderStatus : whenOrderPlaced_then_CREATE_1" + "\n\n");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+```
+
+주문에 대한 결제완료(PayStatus) 시 orderId를 키값으로 OrderStatus 데이터도 생성되며 (주문과 결제를 동시에 처리했을 때 배송을 시작하므로)
+
+"결제완료(주문완료), 주문접수, 배송시작, 결제취소(주문취소)"의 이벤트에 따라 주문상태가 업데이트되도록 모델링하였다.
+
+
 
 
 - CQRS 테스트 
@@ -299,47 +599,157 @@ Correlation-key: 각 이벤트 건 (메시지)가 어떠한 폴리시를 처리�
 #### 답변 
 ordermanagement 서비스만 구동되고 delivery 서비스는 멈춰있는 상태이다. 주문관리에 이벤트가 발생하면 카프카 큐에 정상적으로 들어감을 확인할 수 있다.
 
-# 폴리글랏 퍼시스턴스
---
+# 폴리글랏 퍼시스턴스 (작성완료. 검토필요) 
+- pom.xml
+```
+		<dependency>
+        	<groupId>mysql</groupId>
+        	<artifactId>mysql-connector-java</artifactId>
+        	<scope>provided</scope>
+    	</dependency>
+
+		<dependency>
+		    <groupId>org.javassist</groupId>
+    		<artifactId>javassist</artifactId>
+    		<version>3.25.0-GA</version>
+		</dependency>
+```
+
+application.yml
+```
+
+spring:
+  profiles: docker
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cloud12st.ck7n6wloicx4.ap-northeast-2.rds.amazonaws.com:3306/cloud12st
+    username: root
+    password: cloud#1234
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: create
+```
+
 - 각 마이크로 서비스들이 각자의 저장소 구조를 자율적으로 채택하고 각자의 저장소 유형 (RDB, NoSQL, File System 등)을 선택하여 구현하였는가?
+
 #### 답변 
-Payment 서비스의 경우 타 서비스들의 비해 안정성이 중요하다고 생각하였다. H2 DB의 경우 대규모 주문이 발생시 안정성과 성능이 아직은 부족하다고 생각했다. 그래서 안정성과 성능이 높은 DB와 경제성(라이센스 비용)에 강점이 있는 Maria DB를 선택하게 되었다.
+H2 DB의 경우 휘발성 데이터의 단점이 있는데, productdelivery 서비스의 경우 타 서비스들의 비해 중요하다고 생각하였다.
+productdelivery는 주문과 쿠폰발행/취소를 중간에서 모두 파악하여 처리해야 되기 때문에 백업,복원기능과 안정성이 장점이 있는 mysql을 선택하여 구현하였다.
 
-Payment서비스 pom.xml 의존성을 변경해 주었다.
 
-# API 게이트웨이 
---
+# API 게이트웨이 (작성중)
 - API GW를 통하여 마이크로 서비스들의 진입점을 통일할 수 있는가?
+
+- application.yml
+```
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: productdelivery
+          uri: http://productdelivery:8080
+          predicates:
+            - Path=/stockDeliveries/** 
+        - id: order
+          uri: http://order:8080
+          predicates:
+            - Path=/orders/**
+        - id: orderstatus
+          uri: http://orderstatus:8080
+          predicates:
+            - Path=/orderStatus/**
+        - id: marketing
+          uri: http://marketing:8080
+          predicates:
+            - Path=/promotes/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
+```
 #### 답변
 아래는 MSAEZ를 통해 자동 생성된 gateway 서비스의 application.yml이며, 마이크로서비스들의 진입점을 통일하여 URL Path에 따라서 마이크로서비스별 서로 다른 포트로 라우팅시키도록 설정되었다.
 
 # 운영
 --
-# Deploy/Pipeline 
--- 
-(CI/CD 설정) BuildSpec.yml 사용 각 MSA 구현물은 git의 source repository 에 구성되었고, AWS의 CodeBuild를 활용하여 무정지 CI/CD를 설정하였다.
+# Deploy/Pipeline (작성완료)
 
-CodeBuild 설정
+- (CI/CD 설정) BuildSpec.yml 사용 각 MSA 구현물은 git의 source repository 에 구성되었고, AWS의 CodeBuild를 활용하여 무정지 CI/CD를 설정하였다.
 
-빌드 프로젝드 생성(각 MSA별 별도 설정)
-```
-AWS 화면 내 캡처
-```
+- Repository 화면 캡쳐 
 
-- 기본 repository 
-``` 
-repository 화면 캡쳐 
-```
+![CICD](https://user-images.githubusercontent.com/88864433/133468925-a9ba1fec-8331-4a68-a0b7-2b570e4182de.PNG)
+
+- CodeBuild 설정
+
+![CODEBUILD1](https://user-images.githubusercontent.com/88864433/133469657-2b250c1e-777d-4d18-8ae9-c631ba9fa9f6.PNG)
+
+
+![codebuild2](https://user-images.githubusercontent.com/88864433/133469760-d091efc6-5d09-4c25-a324-337f0b5e0d87.PNG)
 
 - 빌드 환경 설정 
 환경변수(KUBE_URL, KUBE_TOKEN, repository 등 설정) 
-```
-환경변수 화면 캡처 
-```
 
-- 빌드 스펙
+![codebuild_환경변수](https://user-images.githubusercontent.com/88864433/133470474-c69371cd-2ed6-49f1-adb5-8d1f7ac4d056.PNG)
+
+
+- buildspec.yml
+
 ```
-buildspec.yml 파일 내용 캡쳐 
+version: 0.2
+​
+env:
+  variables:
+    IMAGE_REPO_NAME: "order"
+    CODEBUILD_RESOLVED_SOURCE_VERSION: "latest"
+​
+phases:
+  install:
+    commands:    
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+    runtime-versions:
+      java: corretto11
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - echo $IMAGE_REPO_NAME
+      - echo $AWS_ACCOUNT_ID
+      - echo $AWS_DEFAULT_REGION
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo start command
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - mvn package -Dmaven.test.skip=true
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+​
+cache:
+  paths:
+    - '/root/.m2/**/*' 
 ```
 
 # 동기식 호출 / Circuit Breaker / 장애격리
@@ -355,10 +765,106 @@ Hystrix 를 설정: 요청처리 쓰레드에서 처리시간이 610 ms가 넘�
 -- 
 (무정지 배포) 서비스의 무정지 배포를 위하여 주문관리(Ordermanagement) 서비스의 배포 yaml 파일에 readinessProbe 옵션을 추가하였다.
 
-# ConfigMap
--- 
-운영환경에서 컨피그맵을 통해 pod 생성 시 정해진 kafka url 과 log 파일 설정(운영과 개발 분리)
+
 
 # Self-healing (Liveness Probe) 
 -- 
 주문관리(Ordermanagement) 서비스의 배포 yaml 파일에 Pod 내 /tmp/healthy 파일을 5초마다 체크하도록 livenessProbe 옵션을 추가하였다
+
+# 운영유연성
+- 데이터 저장소를 분리하기 위한 Persistence Volume과 Persistence Volume Claim을 적절히 사용하였는가?
+
+- kubectl apply -f efs-provisioner-deploy.yml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: efs-provisioner
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: efs-provisioner
+      ...
+    spec:
+      serviceAccount: efs-provisioner
+      containers:
+        - name: efs-provisioner
+          image: quay.io/external_storage/efs-provisioner:latest
+          env:
+            - name: FILE_SYSTEM_ID
+              value: fs-13229953
+            - name: AWS_REGION
+              value: ap-southeast-1
+            - name: PROVISIONER_NAME
+              value: my-aws.com/aws-efs
+          volumeMounts:
+            - name: pv-volume
+              mountPath: /persistentvolumes
+      volumes:
+        - name: pv-volume
+          nfs:
+            server: fs-13229953.efs.ap-southeast-1.amazonaws.com
+            path: /
+```
+- kubectl apply -f volume-pvc.yml
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aws-efs
+  labels:
+    app: test-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+  storageClassName: aws-efs
+```
+
+- kubectl get pvc
+![pvc_1](https://user-images.githubusercontent.com/88864433/133474884-3f4b8c61-953d-4631-908f-783523d8846c.PNG)
+
+- deployment.yml
+```
+    spec:
+      containers:
+        - name: order
+          image: 879772956301.dkr.ecr.ap-southeast-1.amazonaws.com/order:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+.... 중략
+          volumeMounts:
+          - name: volume
+            mountPath: /logs
+        volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: aws-efs
+```
+
+- application.yml
+```
+logging:
+  path: /logs/order
+  file:
+    max-history: 30
+  level:
+    org.springframework.cloud: debug
+```
+
+- 최종 테스트 화면
+
+![pvc_최종](https://user-images.githubusercontent.com/88864433/133479414-111980fb-598b-4e5a-8f13-24255d11f53a.PNG)
