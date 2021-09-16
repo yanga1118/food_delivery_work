@@ -920,11 +920,16 @@ siege 가용성은 100%을 유지하고 있다.
 
 # Zero-downtime deploy (Readiness Probe) 
 (무정지 배포) 
+
 서비스의 무정지 배포를 위하여 오더(Order) 서비스의 배포 yaml 파일에 readinessProbe 옵션을 추가하였다.
 
 ![readness1](https://user-images.githubusercontent.com/88864433/133539552-06cc7425-1cb5-4319-b92b-c7c20d807c69.PNG)
 
+파일의 버전이 v1을 적용하고 siege를 실행한 상태에서 v2로 배포를 진행하였다. 
+
 ![readness2](https://user-images.githubusercontent.com/88864433/133539593-37ea6cf1-ce76-4d5e-bf21-b6f3ec85079c.PNG)
+
+서비스의 끊김없이 무정지 배포가 실행됨을 확인하였다. 
 
 
 # Self-healing (Liveness Probe) 작성완료
