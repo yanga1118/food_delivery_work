@@ -346,7 +346,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
+```
 ```
 @Entity
 @Table(name="StockDelivery_table")
@@ -377,7 +377,6 @@ public class StockDelivery {
     private static final String DELIVERY_STARTED = "delivery Started";
     private static final String DELIVERY_CANCELED = "delivery Canceled";
 ... 생략 
-
 ```
 
 마케팅의 promote.java 
