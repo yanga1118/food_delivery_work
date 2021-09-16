@@ -61,7 +61,7 @@
 
 다. 기타 
 
-1. [설계/구현/운영]polyglot : 주문팀과 상품배송팀은 mysql 데이터베이스 활용
+1. [설계/구현/운영]polyglot : 상품배송팀은 mysql 데이터베이스 활용, 주문팀과 마케팅팀은 h2 데이터베이스를 활용
 
 
 
@@ -872,7 +872,32 @@ cache:
 Hystrix 를 설정: 요청처리 쓰레드에서 처리시간이 610 ms가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 
 # Autoscale(HPA) 
--- 
+앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
+
+![hpa1](https://user-images.githubusercontent.com/88864433/133547537-2a3d5954-305b-443e-9f06-ecd0913fdc1a.PNG)
+
+평소에 order pod이 정상적으로 존재하던 중에
+
+![hpa2](https://user-images.githubusercontent.com/88864433/133547635-04bbab9e-8373-4e40-94b2-6b23cadab2bb.PNG)
+
+Autoscale 설정 명령어 실행
+
+![hpa3](https://user-images.githubusercontent.com/88864433/133547683-607efd3d-b1a4-47fc-b3a2-3c19700de609.PNG)
+
+Autoscale 설정됨을 확인
+
+![hpa4](https://user-images.githubusercontent.com/88864433/133547727-9e4fb0bd-cbc9-45d5-ab08-606088272f7c.PNG)
+
+siege 명령어를 수행 
+
+![hpa5](https://user-images.githubusercontent.com/88864433/133547764-705a846d-c211-44b5-ae1f-bbb683fce886.PNG)
+
+CPU 사용량이 5% 이상인 경우 POD는 최대 10개까지 늘어나는 것을 확인
+
+![hpa6](https://user-images.githubusercontent.com/88864433/133547800-ea2c92cc-7733-4605-b58f-bc408a5c635b.PNG)
+
+siege 가용성은 100%을 유지하고 있다.
+
 
 # Zero-downtime deploy (Readiness Probe) 
 (무정지 배포) 
@@ -1028,4 +1053,3 @@ logging:
 - 최종 테스트 화면
 
 ![pvc_최종](https://user-images.githubusercontent.com/88864433/133479414-111980fb-598b-4e5a-8f13-24255d11f53a.PNG)
-
