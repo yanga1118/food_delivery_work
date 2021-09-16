@@ -599,7 +599,7 @@ public class PromoteServiceFallback implements PromoteService {
 - 배송팀에서는 주문/주문취소 접수 이벤트에 대해 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler를 구현한다. 
 
 ```
-@Service
+Service
 public class PolicyHandler{
     @Autowired StockDeliveryRepository stockDeliveryRepository;
 
@@ -607,24 +607,27 @@ public class PolicyHandler{
     public void wheneverOrderPlaced_AcceptOrder(@Payload OrderPlaced orderPlaced){
 
         if(!orderPlaced.validate()) return;
-...중략 
+
+        // delivery 객체 생성 //
+         StockDelivery delivery = new StockDelivery();
+
+         delivery.setOrderId(orderPlaced.getId());
+         delivery.setUserId(orderPlaced.getUserId());
+         delivery.setOrderDate(orderPlaced.getOrderDate());
+         delivery.setPhoneNo(orderPlaced.getPhoneNo());
+         delivery.setProductId(orderPlaced.getProductId());
+         delivery.setQty(orderPlaced.getQty()); 
+         delivery.setDeliveryStatus("delivery Started");
+
+         System.out.println("==================================");
+         System.out.println(orderPlaced.getId());
+         System.out.println(orderPlaced.toJson());
+         System.out.println("==================================");
+         System.out.println(delivery.getOrderId());
 
          stockDeliveryRepository.save(delivery);
 
     }
-    private Integer parseInt(String qty) {
-        return null;
-    }
-    /*
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled){
-        if(!orderCanceled.validate()) return;
-        Long orderId =Long.valueOf(orderCanceled.getId());
-        stockDeliveryRepository.deleteById(orderId); 
-        
-        stockDeliveryRepository.s
-    }
-    */
     
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverOrderCanceled_CancleOrder(@Payload OrderCanceled orderCanceled) {
