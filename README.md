@@ -931,6 +931,10 @@ siege -c50 -t30S -r10 -v --content-type "application/json" 'http://localhost:808
 # Autoscale(HPA)
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
 
+![HPA7](https://user-images.githubusercontent.com/88864433/133559612-8e8678cb-91e1-43d1-a777-f107de4f114e.PNG)
+
+
+
 ![hpa1](https://user-images.githubusercontent.com/88864433/133547537-2a3d5954-305b-443e-9f06-ecd0913fdc1a.PNG)
 
 평소에 order pod이 정상적으로 존재하던 중에
@@ -960,6 +964,8 @@ siege 가용성은 100%을 유지하고 있다.
 (무정지 배포) 
 
 서비스의 무정지 배포를 위하여 오더(Order) 서비스의 배포 yaml 파일에 readinessProbe 옵션을 추가하였다.
+
+![HPA8](https://user-images.githubusercontent.com/88864433/133559651-9169b961-c0f8-47db-b8df-8b3c274bbd91.PNG)
 
 ![readness1](https://user-images.githubusercontent.com/88864433/133539552-06cc7425-1cb5-4319-b92b-c7c20d807c69.PNG)
 
