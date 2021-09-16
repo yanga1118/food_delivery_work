@@ -796,7 +796,7 @@ server:
   port: 8080
 ```
 #### 답변
-Gateway의 application.yml이며, 마이크로서비스들의 진입점을 세팅하여 URL Path에 따라서 마이크로서비스별 서로 다른 포트로 라우팅시키도록 설정되었다.
+Gateway의 application.yml이며, 마이크로서비스들의 진입점을 세팅하여 URI Path에 따라서 각 마이크로서비스로 라우팅되도록 설정되었다.
 
 # 운영
 --
