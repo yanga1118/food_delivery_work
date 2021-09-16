@@ -163,12 +163,12 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 
 ### 액터, 커맨드를 부착하여 읽기 좋게 
 
-![4-1](https://user-images.githubusercontent.com/88864433/133555111-9983aa26-cbba-403d-951e-31a23a98953c.PNG)
+![4-3](https://user-images.githubusercontent.com/88864433/133556941-043ef57c-4c55-49cf-9896-e17d5e11bddd.PNG)
 
  
 ### 어그리게잇으로 묶기
 
-![5-1](https://user-images.githubusercontent.com/88864433/133555145-02c2672f-fdea-478b-a3d5-ba231f4ca82d.PNG)
+![5-3](https://user-images.githubusercontent.com/88864433/133556981-a8bfb142-2690-442d-bc92-8d89a3307472.PNG)
  
 ``` 
 - 고객의 주문후 배송팀의 배송관리, 마케팅의 쿠폰관리는 command와 event 들에 의하여 트랜잭션이 유지되어야 하는 단위로 묶어줌
@@ -176,7 +176,7 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 
 ### 바운디드 컨텍스트로 묶기
 
-![6-1](https://user-images.githubusercontent.com/88864433/133555168-7f349ffc-8a64-44f6-bd4a-d2e563e99ca5.PNG)
+![6-3](https://user-images.githubusercontent.com/88864433/133557010-ac6b1c40-82b3-4445-8182-0feb50e4dbfb.PNG)
  
 ```
 - 도메인 서열 분리 
@@ -186,12 +186,12 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 ### 폴리시 부착
 
 
-![폴리시](https://user-images.githubusercontent.com/88864433/133261468-49081d3c-a46d-4c5c-a8d5-4f3f8345fde2.PNG)
+![7-3](https://user-images.githubusercontent.com/88864433/133557035-7d121b68-59ee-4816-98bf-35f7fc2bb160.PNG)
  
 
 ### 폴리시의 이동과 컨텍스트 맵핑 (점선은 Pub/Sub, 실선은 Req/Resp) 
 
-![8](https://user-images.githubusercontent.com/88864433/133361234-7bde60ba-2b5e-415e-a417-924e62d712a4.PNG)
+![8-3](https://user-images.githubusercontent.com/88864433/133557055-ab304be0-37a2-4675-bce0-425281df7301.PNG)
  
 
 ### 완성된 모형
