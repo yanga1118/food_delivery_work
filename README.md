@@ -567,9 +567,6 @@ public class PromoteServiceFallback implements PromoteService {
 (이벤트 드리븐 아키텍처)
 
 - 카프카를 이용하여 PubSub 으로 하나 이상의 서비스가 연동되었는가?
-- Correlation-key: 각 이벤트 건 (메시지)가 어떠한 폴리시를 처리할때 어떤 건에 연결된 처리건인지를 구별하기 위한 Correlation-key 연결을 제대로 구현 하였는가?
-
-#### 답변 (검토필요) 
 
 주문/주문취소 후에 이를 배송팀에 알려주는 트랜잭션은 Pub/Sub 관계로 구현하였다.
 아래는 주문/주문취소 이벤트를 통해 kafka를 통해 배송팀 서비스에 연계받는 코드 내용이다. 
@@ -647,8 +644,7 @@ public class PolicyHandler{
 ```
 
 
-
-# SAGA 패턴 (작성완료) 
+# SAGA 패턴
 - 취소에 따른 보상 트랜잭션을 설계하였는가?(Saga Pattern)
 
 상품배송팀의 기능을 수행할 수 없더라도 주문은 항상 받을 수 있게끔 설계하였다. 
