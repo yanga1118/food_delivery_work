@@ -17,10 +17,10 @@ spring:
           predicates:
             - Path=/orders/**
         - id: orderstatus
-          uri: http://localhost:8082
+          uri: http://localhost:8084
           predicates:
             - Path=/orderStatus/**
-            - id: marketing
+        - id: marketing
           uri: http://localhost:8083
           predicates:
             - Path=/promotes/** 
@@ -55,7 +55,7 @@ spring:
           uri: http://orderstatus:8080
           predicates:
             - Path=/orderStatus/**
-            - id: marketing
+        - id: marketing
           uri: http://marketing:8080
           predicates:
             - Path=/promotes/** 

@@ -29,7 +29,7 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
       bindings:
         event-in:
-          group: order
+          group: orderStatus
           destination: eventTopic
           contentType: application/json
         event-out:
@@ -46,6 +46,15 @@ server:
 
 spring:
   profiles: docker
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   cloud:
     stream:
       kafka:
@@ -61,7 +70,7 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
       bindings:
         event-in:
-          group: order
+          group: orderStatus
           destination: eventTopic
           contentType: application/json
         event-out:
