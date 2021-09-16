@@ -323,6 +323,8 @@ public class Order {
 
 Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 하였고 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
 
+OrderRepository.java
+
 ```
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -332,6 +334,11 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 ```
 
 배송팀의 StockDelivery.java
+
+```
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 ```
 @Entity
@@ -409,6 +416,8 @@ public class Promote {
 .... 생략 
 
 ```
+
+PromoteRepository.java
 
 ```
 import org.springframework.data.repository.PagingAndSortingRepository;
