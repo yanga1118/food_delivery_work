@@ -459,7 +459,7 @@ http GET http://aedb7e1cae2d84953b471cb6b57ed58f-1249713815.ap-southeast-1.elb.a
 http GET http://aedb7e1cae2d84953b471cb6b57ed58f-1249713815.ap-southeast-1.elb.amazonaws.com:8080/promotes
 ```
 
-```
+
 #### 작성필요
 order 주문 취소하기 PATCH
 ```
