@@ -934,9 +934,6 @@ siege -c50 -t30S -r10 -v --content-type "application/json" 'http://localhost:808
 # Autoscale(HPA)
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다.
 
-![HPA7](https://user-images.githubusercontent.com/88864433/133559612-8e8678cb-91e1-43d1-a777-f107de4f114e.PNG)
-
-
 
 ![hpa1](https://user-images.githubusercontent.com/88864433/133547537-2a3d5954-305b-443e-9f06-ecd0913fdc1a.PNG)
 
