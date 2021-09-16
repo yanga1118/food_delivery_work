@@ -220,7 +220,7 @@ https://www.msaez.io/#/storming/7znb05057kPWQo1TAWCkGM0O2LJ3/5843d1078a788a01aa8
 
 ### 비기능 요구사항에 대한 검증 (5개가 맞는지 검토 필요)
 
-![비기능적 요구사항](https://user-images.githubusercontent.com/88864433/133370337-84871067-789e-48d1-89e4-486fd6d3e00e.PNG)
+![비기능적 요구사항2](https://user-images.githubusercontent.com/88864433/133557381-ccd4b060-9193-4c38-a8a2-6cd8f846545a.PNG)
 
 ```
 1. [설계/구현]Req/Resp : 쿠폰이 발행된 건에 한하여 배송을 시작한다. 
