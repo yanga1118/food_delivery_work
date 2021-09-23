@@ -22,21 +22,21 @@ public class Promote {
     private String couponKind;
     private String couponUseYn;
     private String userId;
+    
+    @PrePersist
+    public void onPrePersist(){
+
+        try {
+            Thread.currentThread().sleep((long) (400 + Math.random() * 220));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        
+    }
 
     @PostPersist
     public void onPostPersist(){
-    	/*
-    	if(this.couponId == "" || this.couponId == null) {
-	        CouponPublished couponPublished = new CouponPublished();
-	        BeanUtils.copyProperties(this, couponPublished);
-	        couponPublished.publishAfterCommit();
-    		
-    	}else {
-	        CouponPublished couponPublished = new CouponPublished();
-	        BeanUtils.copyProperties(this, couponPublished);
-	        couponPublished.publishAfterCommit();
-    	}
-    	*/
         CouponPublished couponPublished = new CouponPublished();
         BeanUtils.copyProperties(this, couponPublished);
         couponPublished.publishAfterCommit();
@@ -50,6 +50,8 @@ public class Promote {
         couponCanceled.publishAfterCommit();
         System.out.println("\n\n promote onPostUpdate() \n\n");
     }
+    
+
 
 	public Long getId() {
 		return id;
