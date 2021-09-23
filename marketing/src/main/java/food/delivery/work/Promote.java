@@ -41,6 +41,7 @@ public class Promote {
         BeanUtils.copyProperties(this, couponPublished);
         couponPublished.publishAfterCommit();
         System.out.println("\n\n promote onPostPersist() \n\n");
+        
     }
     
     @PostUpdate
