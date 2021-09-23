@@ -51,7 +51,15 @@ feign:
 hystrix:
   command:
     default:
-      execution.isolation.thread.timeoutInMilliseconds: 1
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 500
+      circuitBreaker:
+        requestVolumeThreshold: 20
+        errorThresholdPercentage: 30
+        enabled: true
 api:
   promote:
     url: http://localhost:8083
