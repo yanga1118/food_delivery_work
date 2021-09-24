@@ -27,6 +27,9 @@ https://github.com/TheOpenCloudEngine/uEngine-cloud/wiki/Httpie-%EC%84%A4%EC%B9%
 1. kafka Zookeeper 
 Windows : kafka_2.12-2.8.0\bin\windows\kafka-server-start.bat kafka_2.12-2.8.0\config\server.properties
 
+full path 명령어 (각자 설치된 경로로 변경)
+C:\kafka_2.13-2.8.0\bin\windows\zookeeper-server-start.bat C:\kafka_2.13-2.8.0\bin\windows\zookeeper.properties
+
 2. kafka Server
 Linux :  kafka_2.12-2.8.0\bin\windows\zookeeper-server-start.bat kafka_2.12-2.8.0\config\zookeeper.properties
 
