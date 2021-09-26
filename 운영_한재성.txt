@@ -247,9 +247,14 @@ source ~/.bashrc
 
 
 ======================================================================================================================================================================
-** 도커 이미지 컨테이너 생성 ** 
-1) 이미지 pull 
-docker image pull nginx 
+EC2에 GIT CLONE 
 
-2) 
-docker run --name my-nginx -d -p 8080:80 nginx
+git clone https://github.com/vbaorov/food_delivery_personal.git
+
+업데이트할때는 
+
+rm -r food_delivery_personal 
+
+이후에 다시 clone
+
+
